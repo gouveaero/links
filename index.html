@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Gabriel Gouvea · ferramentas dos reels</title>
-<meta name="description" content="Todas as ferramentas dos meus reels, num lugar só. Um card por reel, com link direto para cada ferramenta.">
+<meta name="description" content="Todas as ferramentas dos meus reels, num lugar só. Um card por reel, com link direto para a ferramenta ou para o documento com todos os links.">
 <meta name="theme-color" content="#0a0a0b">
 <meta name="robots" content="index,follow">
 <style>
@@ -12,7 +12,7 @@
   :root{
     --bg:#0a0a0b; --bg-soft:#0f0f11; --card:#141416;
     --line:#2a2a2f; --text:#f5f5f7; --muted:#b6b6be;
-    --accent:#e9c46a; --accent-ink:#171204; --paid:#ff9a5c;
+    --accent:#e9c46a; --accent-ink:#171204; --paid:#ff9a5c; --erro:#ff7b72;
   }
   html{-webkit-text-size-adjust:100%}
   body{
@@ -20,7 +20,7 @@
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Noto Sans",sans-serif;
     font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;
   }
-  .wrap{width:100%;max-width:560px;margin:0 auto;padding:26px 14px 34px}
+  .wrap{width:100%;max-width:560px;margin:0 auto;padding:26px 14px 34px;overflow-x:hidden}
   a{color:var(--accent)}
   :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:10px}
 
@@ -61,7 +61,7 @@
 
   .lista{display:flex;flex-direction:column;gap:10px}
   .card{
-    display:grid;grid-template-columns:72px 1fr;gap:12px;align-items:start;
+    display:grid;grid-template-columns:72px minmax(0,1fr);gap:12px;align-items:start;
     background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px;
     scroll-margin-top:118px;
   }
@@ -93,20 +93,59 @@
   .badge.cta{color:var(--accent);background:rgba(233,196,106,.12);border:1px solid rgba(233,196,106,.42);letter-spacing:.06em}
   .badge.paid{color:var(--paid);background:rgba(255,154,92,.12);border:1px solid rgba(255,154,92,.45);text-transform:none;letter-spacing:.02em}
   .badge.mix{color:#e6e6ec;background:rgba(230,230,236,.1);border:1px solid rgba(230,230,236,.3);text-transform:none;letter-spacing:.02em}
-  .drive{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;color:var(--accent);border:1px solid rgba(233,196,106,.4);text-decoration:none}
-  .drive:hover{background:rgba(233,196,106,.14)}
 
-  .ver{display:inline-flex;align-items:center;gap:5px;margin-top:8px;min-height:34px;padding:6px 12px;border-radius:9px;background:transparent;color:var(--accent);border:1px solid rgba(233,196,106,.5);font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer}
+  /* acoes do card */
+  .acoes{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .acao{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    max-width:100%;min-height:44px;padding:9px 14px;border-radius:10px;
+    font-family:inherit;font-size:.82rem;font-weight:800;line-height:1.2;text-align:center;text-decoration:none;
+    background:var(--accent);color:var(--accent-ink);border:1px solid var(--accent);cursor:pointer;
+  }
+  .acao:hover{filter:brightness(1.06)}
+  .ver{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    max-width:100%;min-height:44px;padding:9px 12px;border-radius:10px;background:transparent;
+    color:var(--accent);border:1px solid rgba(233,196,106,.5);
+    font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;
+  }
   .ver:hover{background:rgba(233,196,106,.12)}
   .chev{font-size:.8em;transition:transform .15s ease}
   .ver[aria-expanded=true] .chev{transform:rotate(180deg)}
 
-  .detalhe{grid-column:1/-1;margin-top:4px;border-top:1px solid var(--line);padding-top:2px}
+  /* painel da newsletter: embutido no card, nunca em janela nova */
+  .painel{grid-column:1/-1;margin-top:10px;border:1px solid #3a3730;border-radius:12px;
+    background:linear-gradient(165deg,#1b1a17,#121214);padding:13px}
+  .painel[hidden]{display:none}
+  .painel-h{margin:0 0 3px;font-size:.95rem;font-weight:750;letter-spacing:-.01em}
+  .painel-p{margin:0 0 11px;font-size:.79rem;line-height:1.4;color:var(--muted)}
+  .painel-label{display:block;margin:0 0 5px;font-size:.75rem;font-weight:700;letter-spacing:.02em;color:#d7d7dd}
+  .painel-input{
+    width:100%;min-height:46px;padding:11px 13px;border-radius:10px;border:1px solid var(--line);
+    background:#0d0d0f;color:var(--text);font-family:inherit;font-size:1rem;
+  }
+  .painel-input::placeholder{color:#7c7c85}
+  .painel-input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(233,196,106,.28)}
+  .painel-input[aria-invalid=true]{border-color:var(--erro);box-shadow:0 0 0 3px rgba(255,123,114,.18)}
+  .painel-erro{margin:6px 0 0;color:var(--erro);font-size:.77rem;font-weight:600}
+  .painel-erro[hidden]{display:none}
+  .painel-botoes{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    flex:1 1 9rem;min-height:46px;padding:10px 14px;border-radius:10px;
+    font-family:inherit;font-size:.84rem;font-weight:800;line-height:1.2;text-align:center;text-decoration:none;cursor:pointer;
+  }
+  .btn.primario{background:var(--accent);color:var(--accent-ink);border:1px solid var(--accent)}
+  .btn.primario:hover{filter:brightness(1.06)}
+  .btn.secundario{background:transparent;color:var(--text);border:1px solid #4a4a52}
+  .btn.secundario:hover{border-color:var(--accent);color:var(--accent)}
+
+  .detalhe{grid-column:1/-1;margin-top:10px;border-top:1px solid var(--line);padding-top:2px}
   .detalhe[hidden]{display:none}
   .sublista{list-style:none;margin:0;padding:0}
   .sublista li{padding:9px 0;border-bottom:1px solid rgba(42,42,47,.6)}
   .sublista li:last-child{border-bottom:0;padding-bottom:2px}
-  .li-nome{margin:0;font-size:.88rem;font-weight:650}
+  .li-nome{margin:0;font-size:.88rem;font-weight:650;overflow-wrap:anywhere}
   .li-desc{margin:3px 0 5px;font-size:.79rem;line-height:1.38;color:var(--muted)}
   .li-link{display:inline-flex;gap:4px;font-size:.79rem;font-weight:700;text-decoration:none;color:var(--accent);min-height:30px;align-items:center}
   .li-link:hover{text-decoration:underline}
@@ -120,7 +159,13 @@
   footer ul{margin:0;padding-left:17px;color:#9a9aa2;font-size:.75rem;line-height:1.55}
   footer li{margin-bottom:3px}
   .priv{margin:12px 0 0;color:#8a8a92;font-size:.74rem;text-align:center}
-  @media (max-width:340px){ .card{grid-template-columns:62px 1fr} .thumb{width:62px;height:110px} }
+  @media (max-width:340px){
+    .card{grid-template-columns:62px minmax(0,1fr);gap:10px;padding:10px}
+    .thumb{width:62px;height:110px}
+    .perfil{grid-template-columns:66px minmax(0,1fr);gap:11px}
+    .perfil-foto{width:66px;height:66px}
+    .acao,.ver,.btn{width:100%}
+  }
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -133,8 +178,8 @@
       <h1 class="perfil-nome" id="perfil-nome"><a class="perfil-main" href="https://gabrielgouvea.com.br/"
         target="_blank" rel="noopener noreferrer"
         aria-label="Ver meu site, gabrielgouvea.com.br (abre em nova aba)">Gabriel Gouvea</a></h1>
-      <a class="perfil-handle" href="https://instagram.com/ogabrielsg" target="_blank" rel="noopener noreferrer"
-         aria-label="Instagram @ogabrielsg (abre em nova aba)">@ogabrielsg</a>
+      <a class="perfil-handle" href="https://instagram.com/gab.gouvea" target="_blank" rel="noopener noreferrer"
+         aria-label="Instagram @gab.gouvea (abre em nova aba)">@gab.gouvea</a>
       <p class="perfil-bio">Engineer. Entrepreneur. <b>AI builder</b>.</p>
       <span class="perfil-btn">Ver meu site<span aria-hidden="true">&#8599;</span></span>
     </div>
@@ -161,7 +206,8 @@
           <p class="meta"><span class="dia">27 out</span><span class="ico" aria-hidden="true">🐟</span></p>
           <h2 class="titulo"><a class="card-link" href="https://github.com/666ghj/MiroFish" target="_blank" rel="noopener noreferrer" aria-label="Abrir MiroFish (nova aba)">MiroFish engenharia reversa</a></h2>
           <p class="desc">Motor de inteligência de enxame que simula milhares de clientes para testar um lançamento antes de gastar com anúncio.</p>
-          <div class="foot"><span class="badge cta">REVERSA</span><a class="drive" href="https://drive.google.com/drive/folders/1-PYS5Kv8mO7NPGaA5UrSztxZ0OPnvCIQ" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel MiroFish engenharia reversa no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <div class="foot"><span class="badge cta">REVERSA</span></div>
+<div class="acoes"><a class="acao" href="https://github.com/666ghj/MiroFish" target="_blank" rel="noopener noreferrer" aria-label="Abrir MiroFish (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card" id="reel-1" data-tipo="gratis" data-busca="gpu unlock placas nvidia destrava a potencia escondida nas placas rtx 20, 30 e 40, com ganho de ate 2x em fp16, bf16 e tf32. placa gpu unlock destrava a potencia escondida nas placas rtx 20, 30 e 40, com ganho de ate 2x em fp16, bf16 e tf32.">
@@ -170,7 +216,9 @@
           <p class="meta"><span class="dia">27 out</span><span class="ico" aria-hidden="true">🎮</span></p>
           <h2 class="titulo"><a class="card-link" href="https://github.com/Zagitta/gpu-unlock" target="_blank" rel="noopener noreferrer" aria-label="Abrir GPU Unlock (nova aba)">GPU Unlock placas Nvidia</a></h2>
           <p class="desc">Destrava a potência escondida nas placas RTX 20, 30 e 40, com ganho de até 2x em FP16, BF16 e TF32.</p>
-          <div class="foot"><span class="badge cta">PLACA</span><a class="drive" href="https://drive.google.com/drive/folders/1PAMMhritxzFmaYg_By-0LPbb1wD6G1gA" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel GPU Unlock placas Nvidia no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <p class="li-desc">Oficial para Linux. Versão Windows é experimental e feita pela comunidade.</p>
+          <div class="foot"><span class="badge cta">PLACA</span></div>
+<div class="acoes"><a class="acao" href="https://github.com/Zagitta/gpu-unlock" target="_blank" rel="noopener noreferrer" aria-label="Abrir GPU Unlock (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card" id="reel-4" data-tipo="gratis" data-busca="replica clonar apps onze skills que mapeiam um app, reconstroem tela por tela, acrescentam backend e testam o resultado atras de bugs. clone replica onze skills que mapeiam um app, reconstroem tela por tela, acrescentam backend e testam o resultado atras de bugs.">
@@ -179,7 +227,9 @@
           <p class="meta"><span class="dia">26 out</span><span class="ico" aria-hidden="true">🧬</span></p>
           <h2 class="titulo"><a class="card-link" href="https://github.com/Jakeschincariol/replica-skill" target="_blank" rel="noopener noreferrer" aria-label="Abrir Replica (nova aba)">Replica clonar apps</a></h2>
           <p class="desc">Onze skills que mapeiam um app, reconstroem tela por tela, acrescentam backend e testam o resultado atrás de bugs.</p>
-          <div class="foot"><span class="badge cta">CLONE</span><a class="drive" href="https://drive.google.com/drive/folders/1PrVkonbz7QxRR7478p97KUxxFDwq-SjQ" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel Replica clonar apps no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <p class="li-desc">As skills são gratuitas. Claude Code, hospedagem e pagamentos têm custo à parte.</p>
+          <div class="foot"><span class="badge cta">CLONE</span></div>
+<div class="acoes"><a class="acao" href="https://github.com/Jakeschincariol/replica-skill" target="_blank" rel="noopener noreferrer" aria-label="Abrir Replica (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card" id="reel-3" data-tipo="gratis" data-busca="google maps scraper kit monta listas de empresas locais do google maps com nome, telefone, e-mail, site e redes sociais, rodando no seu computador. maps google maps scraper kit monta listas de empresas locais do google maps com nome, telefone, e-mail, site e redes sociais, rodando no seu computador.">
@@ -188,7 +238,9 @@
           <p class="meta"><span class="dia">26 out</span><span class="ico" aria-hidden="true">🗺️</span></p>
           <h2 class="titulo"><a class="card-link" href="https://github.com/Mahanaicoach/google-maps-scraper-kit" target="_blank" rel="noopener noreferrer" aria-label="Abrir Google Maps Scraper Kit (nova aba)">Google Maps Scraper Kit</a></h2>
           <p class="desc">Monta listas de empresas locais do Google Maps com nome, telefone, e-mail, site e redes sociais, rodando no seu computador.</p>
-          <div class="foot"><span class="badge cta">MAPS</span><a class="drive" href="https://drive.google.com/drive/folders/1vXshnqUnuiZZ6zmTTuFCy7Qt-YWYLEqY" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel Google Maps Scraper Kit no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <p class="li-desc">Uso pesado faz o Google limitar o IP. Telefone e e-mail de pessoa são dado pessoal pela LGPD.</p>
+          <div class="foot"><span class="badge cta">MAPS</span></div>
+<div class="acoes"><a class="acao" href="https://github.com/Mahanaicoach/google-maps-scraper-kit" target="_blank" rel="noopener noreferrer" aria-label="Abrir Google Maps Scraper Kit (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card" id="reel-5" data-tipo="gratis" data-busca="supoclip opusclip alternativa de codigo aberto ao opusclip: corta video longo, podcast ou live em trechos verticais com legenda palavra por palavra. corte supoclip alternativa de codigo aberto ao opusclip: corta video longo, podcast ou live em trechos verticais com legenda palavra por palavra.">
@@ -197,7 +249,9 @@
           <p class="meta"><span class="dia">25 out</span><span class="ico" aria-hidden="true">✂️</span></p>
           <h2 class="titulo"><a class="card-link" href="https://github.com/FujiwaraChoki/supoclip" target="_blank" rel="noopener noreferrer" aria-label="Abrir SupoClip (nova aba)">SupoClip OpusClip</a></h2>
           <p class="desc">Alternativa de código aberto ao OpusClip: corta vídeo longo, podcast ou live em trechos verticais com legenda palavra por palavra.</p>
-          <div class="foot"><span class="badge cta">CORTE</span><a class="drive" href="https://drive.google.com/drive/folders/1xvLdXM4F_7qjlgg7FzECxwvdJEBP9Nlc" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel SupoClip OpusClip no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <p class="li-desc">Roda 100% local com Whisper e Ollama. Existe versão hospedada em supoclip.com.</p>
+          <div class="foot"><span class="badge cta">CORTE</span></div>
+<div class="acoes"><a class="acao" href="https://github.com/FujiwaraChoki/supoclip" target="_blank" rel="noopener noreferrer" aria-label="Abrir SupoClip (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card multi" id="reel-6" data-tipo="gratis" data-busca="skills de edicao de video 6 ferramentas: onetake, collage b-roll, claude animation base, lemo opuscar, hyperframes, remotion. skills onetake faz video em um plano continuo, em que cada beat nasce do anterior, sem corte para o proximo slide. collage b-roll transforma uma frase falada em video de colagem de papel, no formato 9:16, para usar como b-roll. claude animation base kit inicial para animar desenhos pintados a mao com p5.js, o pincel p5.brush e o mascote clawd. lemo opuscar traz dezenas de estilos de filme prontos em codigo para o agente montar video sem gerador de video. hyperframes voce escreve html e ele renderiza video, feito para agentes de codigo. remotion ensina o agente a montar cena, corte e animacao em codigo, com foco em react.">
@@ -206,10 +260,27 @@
           <p class="meta"><span class="dia">24 out</span><span class="ico" aria-hidden="true">🎬</span></p>
           <h2 class="titulo">Skills de edição de vídeo</h2>
           <p class="desc">6 ferramentas: Onetake, Collage B-roll, Claude Animation Base, Lemo Opuscar, HyperFrames, Remotion.</p>
+          <div class="foot"><span class="badge cta">SKILLS</span></div>
+<div class="acoes"><a class="acao js-painel" href="https://docs.google.com/document/d/1V1jysaSyuwNwoEbuBvXqV6eukni2WYW7m4ogk0GX3_U/view" target="_blank" rel="noopener noreferrer" aria-expanded="false" aria-controls="reel-6-painel" aria-label="Ver as 6 ferramentas do reel Skills de edição de vídeo (nova aba)">Ver as 6 ferramentas<span aria-hidden="true">&#8599;</span></a></div>
           <button class="ver" type="button" aria-expanded="false" aria-controls="reel-6-lista"
-                  data-rotulo="Ver as 6 ferramentas" data-aberto="Fechar lista">
-            Ver as 6 ferramentas<span class="chev" aria-hidden="true">&#9662;</span></button>
-          <div class="foot"><span class="badge cta">SKILLS</span><a class="drive" href="https://drive.google.com/drive/folders/11A5_photz5-kJ1sCeG34SYe1nuhOwMRQ" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel Skills de edição de vídeo no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+                  data-rotulo="Ver a lista aqui" data-aberto="Fechar lista">
+            Ver a lista aqui<span class="chev" aria-hidden="true">&#9662;</span></button>
+        </div>
+        <div class="painel" id="reel-6-painel" role="group" aria-labelledby="reel-6-painel-t" data-doc="https://docs.google.com/document/d/1V1jysaSyuwNwoEbuBvXqV6eukni2WYW7m4ogk0GX3_U/view" data-reel="24/10 - Skills de edição de vídeo" hidden>
+          <p class="painel-h" id="reel-6-painel-t">Newsletter de IA, toda semana</p>
+          <p class="painel-p">Uma ideia, uma ferramenta e um link por semana. Sem spam.</p>
+          <form class="painel-form" novalidate>
+            <label class="painel-label" for="reel-6-painel-email">Seu e-mail</label>
+            <input class="painel-input" id="reel-6-painel-email" name="email" type="email" inputmode="email"
+                   autocomplete="email" placeholder="voce@email.com" required
+                   aria-describedby="reel-6-painel-err">
+            <p class="painel-erro" id="reel-6-painel-err" role="alert" hidden></p>
+            <div class="painel-botoes">
+              <button class="btn primario" type="submit">Quero receber</button>
+              <a class="btn secundario" href="https://docs.google.com/document/d/1V1jysaSyuwNwoEbuBvXqV6eukni2WYW7m4ogk0GX3_U/view" target="_blank" rel="noopener noreferrer"
+                 aria-label="Só quero os links: abrir o documento com as ferramentas (nova aba)">Só quero os links</a>
+            </div>
+          </form>
         </div>
         <div class="detalhe" id="reel-6-lista" hidden>
           <ul class="sublista">
@@ -250,6 +321,7 @@
                  aria-label="Abrir Remotion (nova aba)">Abrir<span aria-hidden="true">&#8599;</span></a>
             </li>
           </ul>
+          <p class="li-desc"><strong>Licen&ccedil;as e observa&ccedil;&otilde;es:</strong></p><ul class="sublista"><li><strong>Onetake:</strong> Licença PolyForm: uso não comercial.</li><li><strong>Collage B-roll:</strong> Depende do MaxFusion, que é pago.</li><li><strong>HyperFrames:</strong> Também aparece no DM do reel de 13/10.</li><li><strong>Remotion:</strong> Pago para empresas com 3 ou mais funcionários.</li></ul>
         </div>
       </article>
       <article class="card" id="reel-8" data-tipo="gratis" data-busca="carrossel notebooklm caderno de estudos do google que le seus pdfs, links e videos e gera resumo em audio, mapa mental, flashcards e slides. notebook notebooklm (gemini notebook) caderno de estudos do google que le seus pdfs, links e videos e gera resumo em audio, mapa mental, flashcards e slides.">
@@ -258,7 +330,9 @@
           <p class="meta"><span class="dia">22 out</span><span class="ico" aria-hidden="true">📓</span></p>
           <h2 class="titulo"><a class="card-link" href="https://notebooklm.google.com" target="_blank" rel="noopener noreferrer" aria-label="Abrir NotebookLM (Gemini Notebook) (nova aba)">Carrossel NotebookLM</a></h2>
           <p class="desc">Caderno de estudos do Google que lê seus PDFs, links e vídeos e gera resumo em áudio, mapa mental, flashcards e slides.</p>
-          <div class="foot"><span class="badge cta">NOTEBOOK</span><a class="drive" href="https://drive.google.com/drive/folders/1WZi6nTstwvd8NSYXhJt7VhGc6on8i3Nt" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel Carrossel NotebookLM no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <p class="li-desc">Gratuito com conta Google. Limites maiores nos planos pagos. Conteúdo entregue em carrossel, não em reel.</p>
+          <div class="foot"><span class="badge cta">NOTEBOOK</span></div>
+<div class="acoes"><a class="acao" href="https://notebooklm.google.com" target="_blank" rel="noopener noreferrer" aria-label="Abrir NotebookLM (Gemini Notebook) (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card" id="reel-7" data-tipo="pago" data-busca="cdms scaledown modelos que so decidem, sem escrever texto: classificam, extraem e resumem em formato fixo, com muito menos token. cdm cdms scaledown modelos que so decidem, sem escrever texto: classificam, extraem e resumem em formato fixo, com muito menos token.">
@@ -267,7 +341,9 @@
           <p class="meta"><span class="dia">22 out</span><span class="ico" aria-hidden="true">📊</span></p>
           <h2 class="titulo"><a class="card-link" href="https://scaledown.ai" target="_blank" rel="noopener noreferrer" aria-label="Abrir CDMs ScaleDown (nova aba)">CDMs ScaleDown</a></h2>
           <p class="desc">Modelos que só decidem, sem escrever texto: classificam, extraem e resumem em formato fixo, com muito menos token.</p>
-          <div class="foot"><span class="badge cta">CDM</span><span class="badge paid">Pago</span><a class="drive" href="https://drive.google.com/drive/folders/1yThL-AZYo8TrDQUcl5JD5Sfz94FRZQPh" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel CDMs ScaleDown no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <p class="li-desc">Modelos proprietários, vendidos por API. Documentação em docs.scaledown.ai.</p>
+          <div class="foot"><span class="badge cta">CDM</span><span class="badge paid">Pago</span></div>
+<div class="acoes"><a class="acao" href="https://scaledown.ai" target="_blank" rel="noopener noreferrer" aria-label="Abrir CDMs ScaleDown (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card" id="reel-10" data-tipo="gratis" data-busca="todas as leis do brasil em markdown todas as leis do brasil em arquivos markdown, prontas para busca e para o agente ler. leis leis do brasil em markdown todas as leis do brasil em arquivos markdown, prontas para busca e para o agente ler.">
@@ -276,7 +352,8 @@
           <p class="meta"><span class="dia">21 out</span><span class="ico" aria-hidden="true">⚖️</span></p>
           <h2 class="titulo"><a class="card-link" href="https://github.com/ctresb/leis" target="_blank" rel="noopener noreferrer" aria-label="Abrir Leis do Brasil em Markdown (nova aba)">Todas as leis do Brasil em Markdown</a></h2>
           <p class="desc">Todas as leis do Brasil em arquivos Markdown, prontas para busca e para o agente ler.</p>
-          <div class="foot"><span class="badge cta">LEIS</span><a class="drive" href="https://drive.google.com/drive/folders/1MJRAXb6tcVrA6EkCdWlGLloje-uHvi2h" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel Todas as leis do Brasil em Markdown no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <div class="foot"><span class="badge cta">LEIS</span></div>
+<div class="acoes"><a class="acao" href="https://github.com/ctresb/leis" target="_blank" rel="noopener noreferrer" aria-label="Abrir Leis do Brasil em Markdown (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card" id="reel-9" data-tipo="gratis" data-busca="graft mapa de codigo da ao agente um mapa do codigo para ele se localizar mais rapido, gastando menos token e menos tempo. mapa trail code da ao agente um mapa do codigo para ele se localizar mais rapido, gastando menos token e menos tempo.">
@@ -285,7 +362,9 @@
           <p class="meta"><span class="dia">21 out</span><span class="ico" aria-hidden="true">🗺️</span></p>
           <h2 class="titulo"><a class="card-link" href="https://github.com/trailhq/Trail-Code" target="_blank" rel="noopener noreferrer" aria-label="Abrir Trail Code (nova aba)">Graft mapa de código</a></h2>
           <p class="desc">Dá ao agente um mapa do código para ele se localizar mais rápido, gastando menos token e menos tempo.</p>
-          <div class="foot"><span class="badge cta">MAPA</span><a class="drive" href="https://drive.google.com/drive/folders/1CtbMUqTVkK7ibFlb9EiaTcfgoskdeLaz" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel Graft mapa de código no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <p class="li-desc">Funciona com Claude Code, Cursor, Codex e Gemini.</p>
+          <div class="foot"><span class="badge cta">MAPA</span></div>
+<div class="acoes"><a class="acao" href="https://github.com/trailhq/Trail-Code" target="_blank" rel="noopener noreferrer" aria-label="Abrir Trail Code (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card" id="reel-11" data-tipo="gratis" data-busca="voicestudio alternativa local ao elevenlabs: clonagem de voz, desenho de voz e dublagem rodando na sua maquina. voice voicestudio alternativa local ao elevenlabs: clonagem de voz, desenho de voz e dublagem rodando na sua maquina.">
@@ -294,7 +373,9 @@
           <p class="meta"><span class="dia">19 out</span><span class="ico" aria-hidden="true">🎙️</span></p>
           <h2 class="titulo"><a class="card-link" href="https://github.com/debpalash/VoiceStudio" target="_blank" rel="noopener noreferrer" aria-label="Abrir VoiceStudio (nova aba)">VoiceStudio</a></h2>
           <p class="desc">Alternativa local ao ElevenLabs: clonagem de voz, desenho de voz e dublagem rodando na sua máquina.</p>
-          <div class="foot"><span class="badge cta">VOICE</span><a class="drive" href="https://drive.google.com/drive/folders/1La-Yu74lTQdJvue9dPS9cZB3TfOLadYV" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel VoiceStudio no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <p class="li-desc">A versão aberta não tem mensalidade. A versão Pro é paga.</p>
+          <div class="foot"><span class="badge cta">VOICE</span></div>
+<div class="acoes"><a class="acao" href="https://github.com/debpalash/VoiceStudio" target="_blank" rel="noopener noreferrer" aria-label="Abrir VoiceStudio (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card" id="reel-18" data-tipo="pago" data-busca="gemini argon modelo de ponta do google para tarefas complexas, com leitura de planilhas, graficos e analise de dados. argon gemini 4 argon modelo de ponta do google para tarefas complexas, com leitura de planilhas, graficos e analise de dados.">
@@ -303,7 +384,9 @@
           <p class="meta"><span class="dia">14 out</span><span class="ico" aria-hidden="true">💎</span></p>
           <h2 class="titulo"><a class="card-link" href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" aria-label="Abrir Gemini 4 Argon (nova aba)">Gemini Argon</a></h2>
           <p class="desc">Modelo de ponta do Google para tarefas complexas, com leitura de planilhas, gráficos e análise de dados.</p>
-          <div class="foot"><span class="badge cta">ARGON</span><span class="badge paid">Pago</span><a class="drive" href="https://drive.google.com/drive/folders/1vkOrxt-z1qIUptry_25LT1ThAyzgyJle" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel Gemini Argon no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <p class="li-desc">Incluído no Google AI Pro e no Ultra. No AI Studio, a API é cobrada por token.</p>
+          <div class="foot"><span class="badge cta">ARGON</span><span class="badge paid">Pago</span></div>
+<div class="acoes"><a class="acao" href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" aria-label="Abrir Gemini 4 Argon (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card multi" id="reel-17" data-tipo="gratis" data-busca="5 githubs que bombam 4 ferramentas: opengym, vorssaint-utils, yoinks, god&#x27;s eye view. repos opengym app de treino e peso corporal, de codigo aberto, para iphone, apple watch e android. vorssaint-utils kit de utilitarios de barra de menu para macos, de codigo aberto. yoinks baixa video pelo terminal, sem anuncio e sem site suspeito. god&#x27;s eye view simulador de satelite espiao no navegador, com dados espaciais abertos reais.">
@@ -311,11 +394,28 @@
         <div class="info">
           <p class="meta"><span class="dia">14 out</span><span class="ico" aria-hidden="true">🐙</span></p>
           <h2 class="titulo">5 GitHubs que bombam</h2>
-          <p class="desc">4 ferramentas: openGym, vorssaint-utils, yoinks, God&#x27;s Eye View.</p>
+          <p class="desc">4 ferramentas: openGym, vorssaint-utils, yoinks, God's Eye View.</p>
+          <div class="foot"><span class="badge cta">REPOS</span></div>
+<div class="acoes"><a class="acao js-painel" href="https://docs.google.com/document/d/1WtyAiITeRDpRPB8q4vLhuMBUbbh_tcY14cdr9Z0DRzE/view" target="_blank" rel="noopener noreferrer" aria-expanded="false" aria-controls="reel-17-painel" aria-label="Ver as 4 ferramentas do reel 5 GitHubs que bombam (nova aba)">Ver as 4 ferramentas<span aria-hidden="true">&#8599;</span></a></div>
           <button class="ver" type="button" aria-expanded="false" aria-controls="reel-17-lista"
-                  data-rotulo="Ver as 4 ferramentas" data-aberto="Fechar lista">
-            Ver as 4 ferramentas<span class="chev" aria-hidden="true">&#9662;</span></button>
-          <div class="foot"><span class="badge cta">REPOS</span><a class="drive" href="https://drive.google.com/drive/folders/1JU7pqgB_fSeqGgjp1p6bFcvLDTow98fP" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel 5 GitHubs que bombam no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+                  data-rotulo="Ver a lista aqui" data-aberto="Fechar lista">
+            Ver a lista aqui<span class="chev" aria-hidden="true">&#9662;</span></button>
+        </div>
+        <div class="painel" id="reel-17-painel" role="group" aria-labelledby="reel-17-painel-t" data-doc="https://docs.google.com/document/d/1WtyAiITeRDpRPB8q4vLhuMBUbbh_tcY14cdr9Z0DRzE/view" data-reel="14/10 - 5 GitHubs que bombam" hidden>
+          <p class="painel-h" id="reel-17-painel-t">Newsletter de IA, toda semana</p>
+          <p class="painel-p">Uma ideia, uma ferramenta e um link por semana. Sem spam.</p>
+          <form class="painel-form" novalidate>
+            <label class="painel-label" for="reel-17-painel-email">Seu e-mail</label>
+            <input class="painel-input" id="reel-17-painel-email" name="email" type="email" inputmode="email"
+                   autocomplete="email" placeholder="voce@email.com" required
+                   aria-describedby="reel-17-painel-err">
+            <p class="painel-erro" id="reel-17-painel-err" role="alert" hidden></p>
+            <div class="painel-botoes">
+              <button class="btn primario" type="submit">Quero receber</button>
+              <a class="btn secundario" href="https://docs.google.com/document/d/1WtyAiITeRDpRPB8q4vLhuMBUbbh_tcY14cdr9Z0DRzE/view" target="_blank" rel="noopener noreferrer"
+                 aria-label="Só quero os links: abrir o documento com as ferramentas (nova aba)">Só quero os links</a>
+            </div>
+          </form>
         </div>
         <div class="detalhe" id="reel-17-lista" hidden>
           <ul class="sublista">
@@ -338,12 +438,13 @@
                  aria-label="Abrir yoinks (nova aba)">Abrir<span aria-hidden="true">&#8599;</span></a>
             </li>
             <li>
-              <p class="li-nome">God&#x27;s Eye View</p>
+              <p class="li-nome">God's Eye View</p>
               <p class="li-desc">Simulador de satélite espião no navegador, com dados espaciais abertos reais.</p>
               <a class="li-link" href="https://github.com/bilawalsidhu/gods-eye-view" target="_blank" rel="noopener noreferrer"
                  aria-label="Abrir God&#x27;s Eye View (nova aba)">Abrir<span aria-hidden="true">&#8599;</span></a>
             </li>
           </ul>
+          
         </div>
       </article>
       <article class="card" id="reel-16" data-tipo="gratis" data-busca="photocraft editor de fotos escrito em rust, com ferramentas de ajuste e filtros. foto photocraft editor de fotos escrito em rust, com ferramentas de ajuste e filtros.">
@@ -352,7 +453,9 @@
           <p class="meta"><span class="dia">14 out</span><span class="ico" aria-hidden="true">📷</span></p>
           <h2 class="titulo"><a class="card-link" href="https://github.com/storytold/photocraft" target="_blank" rel="noopener noreferrer" aria-label="Abrir PhotoCraft (nova aba)">PhotoCraft</a></h2>
           <p class="desc">Editor de fotos escrito em Rust, com ferramentas de ajuste e filtros.</p>
-          <div class="foot"><span class="badge cta">FOTO</span><a class="drive" href="https://drive.google.com/drive/folders/1ZllRNKNBnA5_c4SMulYQYJZaweKTpMUg" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel PhotoCraft no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <p class="li-desc">Está em alfa. Página de download em getartcraft.com.</p>
+          <div class="foot"><span class="badge cta">FOTO</span></div>
+<div class="acoes"><a class="acao" href="https://github.com/storytold/photocraft" target="_blank" rel="noopener noreferrer" aria-label="Abrir PhotoCraft (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card" id="reel-15" data-tipo="gratis" data-busca="pc versus nuvem mod que leva a fisica, o inventario e os blocos do minecraft para dentro de skyrim. nuvem skycraft mod que leva a fisica, o inventario e os blocos do minecraft para dentro de skyrim.">
@@ -361,7 +464,9 @@
           <p class="meta"><span class="dia">14 out</span><span class="ico" aria-hidden="true">☁️</span></p>
           <h2 class="titulo"><a class="card-link" href="https://github.com/chasmlol/SkyCraft" target="_blank" rel="noopener noreferrer" aria-label="Abrir SkyCraft (nova aba)">PC versus nuvem</a></h2>
           <p class="desc">Mod que leva a física, o inventário e os blocos do Minecraft para dentro de Skyrim.</p>
-          <div class="foot"><span class="badge cta">NUVEM</span><a class="drive" href="https://drive.google.com/drive/folders/10Skt5LoqpjD38Pw7080nxgcVD3e_noNo" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel PC versus nuvem no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <p class="li-desc">O DM leva também o REA, que é o agente de engenharia reversa do mesmo vídeo.</p>
+          <div class="foot"><span class="badge cta">NUVEM</span></div>
+<div class="acoes"><a class="acao" href="https://github.com/chasmlol/SkyCraft" target="_blank" rel="noopener noreferrer" aria-label="Abrir SkyCraft (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card" id="reel-14" data-tipo="gratis" data-busca="opencut editor de video de codigo aberto, alternativa ao capcut, no navegador ou no desktop. editor opencut editor de video de codigo aberto, alternativa ao capcut, no navegador ou no desktop.">
@@ -370,7 +475,9 @@
           <p class="meta"><span class="dia">14 out</span><span class="ico" aria-hidden="true">🎞️</span></p>
           <h2 class="titulo"><a class="card-link" href="https://github.com/OpenCut-app/OpenCut" target="_blank" rel="noopener noreferrer" aria-label="Abrir OpenCut (nova aba)">OpenCut</a></h2>
           <p class="desc">Editor de vídeo de código aberto, alternativa ao CapCut, no navegador ou no desktop.</p>
-          <div class="foot"><span class="badge cta">EDITOR</span><a class="drive" href="https://drive.google.com/drive/folders/1zL1WKnjMKSaHsdP_q-TQ0dQtrrqFBgWQ" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel OpenCut no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <p class="li-desc">Versão web em opencut.app. O mesmo projeto também estava entre os 5 GitHubs do reel REPOS.</p>
+          <div class="foot"><span class="badge cta">EDITOR</span></div>
+<div class="acoes"><a class="acao" href="https://github.com/OpenCut-app/OpenCut" target="_blank" rel="noopener noreferrer" aria-label="Abrir OpenCut (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card" id="reel-13" data-tipo="gratis" data-busca="ia abrindo programas e jogos skills e ferramentas que deixam o agente modificar quase qualquer jogo de pc. software universal-modder skills e ferramentas que deixam o agente modificar quase qualquer jogo de pc.">
@@ -379,7 +486,9 @@
           <p class="meta"><span class="dia">14 out</span><span class="ico" aria-hidden="true">🕹️</span></p>
           <h2 class="titulo"><a class="card-link" href="https://github.com/rehan-remade/universal-modder" target="_blank" rel="noopener noreferrer" aria-label="Abrir universal-modder (nova aba)">IA abrindo programas e jogos</a></h2>
           <p class="desc">Skills e ferramentas que deixam o agente modificar quase qualquer jogo de PC.</p>
-          <div class="foot"><span class="badge cta">SOFTWARE</span><a class="drive" href="https://drive.google.com/drive/folders/1I368rZZZsvj0iEX46tMf1Bz1kCoujiwT" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel IA abrindo programas e jogos no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <p class="li-desc">O DM leva também o iw4L e o mashup do chasm, que são as recriações citadas no vídeo.</p>
+          <div class="foot"><span class="badge cta">SOFTWARE</span></div>
+<div class="acoes"><a class="acao" href="https://github.com/rehan-remade/universal-modder" target="_blank" rel="noopener noreferrer" aria-label="Abrir universal-modder (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card" id="reel-12" data-tipo="gratis" data-busca="ai torture chamber experimentos de steering que empurram um modelo pequeno para estados emocionais fortes e medem o efeito. steering ai torture chamber experimentos de steering que empurram um modelo pequeno para estados emocionais fortes e medem o efeito.">
@@ -388,7 +497,9 @@
           <p class="meta"><span class="dia">14 out</span><span class="ico" aria-hidden="true">🧠</span></p>
           <h2 class="titulo"><a class="card-link" href="https://github.com/terrafying/ai-torture-chamber" target="_blank" rel="noopener noreferrer" aria-label="Abrir AI Torture Chamber (nova aba)">AI Torture Chamber</a></h2>
           <p class="desc">Experimentos de steering que empurram um modelo pequeno para estados emocionais fortes e medem o efeito.</p>
-          <div class="foot"><span class="badge cta">STEERING</span><a class="drive" href="https://drive.google.com/drive/folders/1QXh8KFtXnpinD0MEJizpoDJSVkSpL3AJ" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel AI Torture Chamber no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <p class="li-desc">O DM leva também o paper no arXiv (2609.16247) e reportagens sobre o teste.</p>
+          <div class="foot"><span class="badge cta">STEERING</span></div>
+<div class="acoes"><a class="acao" href="https://github.com/terrafying/ai-torture-chamber" target="_blank" rel="noopener noreferrer" aria-label="Abrir AI Torture Chamber (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card multi" id="reel-19" data-tipo="pago" data-busca="5 projetos github para claude code 4 ferramentas: google workspace cli, apify, agent skills (addy osmani), playwright cli. github google workspace cli um comando para drive, gmail, agenda, docs, planilhas e chat. apify loja com milhares de scrapers prontos para puxar dados de sites. agent skills (addy osmani) mais de vinte skills de engenharia de producao para agentes de codigo. playwright cli deixa o agente abrir um navegador de verdade, gravar as acoes e testar a pagina.">
@@ -397,10 +508,27 @@
           <p class="meta"><span class="dia">13 out</span><span class="ico" aria-hidden="true">🐙</span></p>
           <h2 class="titulo">5 projetos GitHub para Claude Code</h2>
           <p class="desc">4 ferramentas: Google Workspace CLI, Apify, Agent Skills (Addy Osmani), Playwright CLI.</p>
+          <div class="foot"><span class="badge cta">GITHUB</span><span class="badge mix">Gr&aacute;tis + pago</span></div>
+<div class="acoes"><a class="acao js-painel" href="https://docs.google.com/document/d/1udGx6pK029sL-3HZKFm-JWM9z1auYC-JSt4XceX9NOo/view" target="_blank" rel="noopener noreferrer" aria-expanded="false" aria-controls="reel-19-painel" aria-label="Ver as 4 ferramentas do reel 5 projetos GitHub para Claude Code (nova aba)">Ver as 4 ferramentas<span aria-hidden="true">&#8599;</span></a></div>
           <button class="ver" type="button" aria-expanded="false" aria-controls="reel-19-lista"
-                  data-rotulo="Ver as 4 ferramentas" data-aberto="Fechar lista">
-            Ver as 4 ferramentas<span class="chev" aria-hidden="true">&#9662;</span></button>
-          <div class="foot"><span class="badge cta">GITHUB</span><span class="badge mix">Gr&aacute;tis + pago</span><a class="drive" href="https://drive.google.com/drive/folders/1HVpiY8QS6GyxPZ_tik7UTqheZsIJgRmx" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel 5 projetos GitHub para Claude Code no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+                  data-rotulo="Ver a lista aqui" data-aberto="Fechar lista">
+            Ver a lista aqui<span class="chev" aria-hidden="true">&#9662;</span></button>
+        </div>
+        <div class="painel" id="reel-19-painel" role="group" aria-labelledby="reel-19-painel-t" data-doc="https://docs.google.com/document/d/1udGx6pK029sL-3HZKFm-JWM9z1auYC-JSt4XceX9NOo/view" data-reel="13/10 - 5 projetos GitHub para Claude Code" hidden>
+          <p class="painel-h" id="reel-19-painel-t">Newsletter de IA, toda semana</p>
+          <p class="painel-p">Uma ideia, uma ferramenta e um link por semana. Sem spam.</p>
+          <form class="painel-form" novalidate>
+            <label class="painel-label" for="reel-19-painel-email">Seu e-mail</label>
+            <input class="painel-input" id="reel-19-painel-email" name="email" type="email" inputmode="email"
+                   autocomplete="email" placeholder="voce@email.com" required
+                   aria-describedby="reel-19-painel-err">
+            <p class="painel-erro" id="reel-19-painel-err" role="alert" hidden></p>
+            <div class="painel-botoes">
+              <button class="btn primario" type="submit">Quero receber</button>
+              <a class="btn secundario" href="https://docs.google.com/document/d/1udGx6pK029sL-3HZKFm-JWM9z1auYC-JSt4XceX9NOo/view" target="_blank" rel="noopener noreferrer"
+                 aria-label="Só quero os links: abrir o documento com as ferramentas (nova aba)">Só quero os links</a>
+            </div>
+          </form>
         </div>
         <div class="detalhe" id="reel-19-lista" hidden>
           <ul class="sublista">
@@ -429,6 +557,7 @@
                  aria-label="Abrir Playwright CLI (nova aba)">Abrir<span aria-hidden="true">&#8599;</span></a>
             </li>
           </ul>
+          <p class="li-desc"><strong>Licen&ccedil;as e observa&ccedil;&otilde;es:</strong></p><ul class="sublista"><li><strong>Apify:</strong> Tem créditos gratuitos por mês; o uso acima disso é pago.</li></ul>
         </div>
       </article>
       <article class="card" id="reel-20" data-tipo="gratis" data-busca="cloudflare security-audit skill skill que roda auditoria de seguranca em fases, com achados verificaveis por maquina. auditoria cloudflare security-audit skill skill que roda auditoria de seguranca em fases, com achados verificaveis por maquina.">
@@ -437,7 +566,8 @@
           <p class="meta"><span class="dia">12 out</span><span class="ico" aria-hidden="true">🛡️</span></p>
           <h2 class="titulo"><a class="card-link" href="https://github.com/cloudflare/security-audit-skill" target="_blank" rel="noopener noreferrer" aria-label="Abrir Cloudflare security-audit skill (nova aba)">Cloudflare security-audit skill</a></h2>
           <p class="desc">Skill que roda auditoria de segurança em fases, com achados verificáveis por máquina.</p>
-          <div class="foot"><span class="badge cta">AUDITORIA</span><a class="drive" href="https://drive.google.com/drive/folders/1J0-x5KE-EPLUu7EP6KfFiqjJ4RBOzfpV" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel Cloudflare security-audit skill no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <div class="foot"><span class="badge cta">AUDITORIA</span></div>
+<div class="acoes"><a class="acao" href="https://github.com/cloudflare/security-audit-skill" target="_blank" rel="noopener noreferrer" aria-label="Abrir Cloudflare security-audit skill (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
       <article class="card" id="reel-21" data-tipo="gratis" data-busca="rea engenharia reversa agente de engenharia reversa que vai do comportamento do app ate binario nativo. decode rea agente de engenharia reversa que vai do comportamento do app ate binario nativo.">
@@ -446,7 +576,9 @@
           <p class="meta"><span class="dia">11 out</span><span class="ico" aria-hidden="true">🔍</span></p>
           <h2 class="titulo"><a class="card-link" href="https://github.com/morluto/rea" target="_blank" rel="noopener noreferrer" aria-label="Abrir REA (nova aba)">REA engenharia reversa</a></h2>
           <p class="desc">Agente de engenharia reversa que vai do comportamento do app até binário nativo.</p>
-          <div class="foot"><span class="badge cta">DECODE</span><a class="drive" href="https://drive.google.com/drive/folders/1bbqTI0ktSP6rDbTfbSMkzMxg9E5zclTq" target="_blank" rel="noopener noreferrer" aria-label="Abrir a pasta do reel REA engenharia reversa no Drive (nova aba)" title="Ver o reel no Drive"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.14v13.72L19 12 8 5.14Z"/></svg></a></div>
+          <p class="li-desc">Uso só em software que você tem ou está autorizado a analisar.</p>
+          <div class="foot"><span class="badge cta">DECODE</span></div>
+<div class="acoes"><a class="acao" href="https://github.com/morluto/rea" target="_blank" rel="noopener noreferrer" aria-label="Abrir REA (nova aba)">Ver a ferramenta<span aria-hidden="true">&#8599;</span></a></div>
         </div>
       </article>
   </main>
@@ -461,12 +593,19 @@
       <li>Collage B-roll depende do MaxFusion, que &eacute; pago.</li>
       <li>VoiceStudio tem vers&atilde;o Pro paga.</li>
     </ul>
-    <p class="priv">Esta p&aacute;gina n&atilde;o usa cookies, n&atilde;o tem analytics e n&atilde;o coleta seus dados.</p>
+    <p class="priv">Esta p&aacute;gina n&atilde;o usa cookies e n&atilde;o guarda nada no seu navegador. Se voc&ecirc; assinar a newsletter, o seu e-mail fica guardado s&oacute; para eu mandar os links e a edi&ccedil;&atilde;o semanal.</p>
   </footer>
 </div>
 
 <script>
 (function () {
+  /* ------------------------------------------------------------------
+     ENDPOINT da newsletter: cole aqui a URL que recebe o POST JSON.
+     Enquanto estiver "COLOCAR_AQUI" (ou vazio), a pagina so abre o Doc,
+     sem tentar enviar nada e sem mostrar erro para a pessoa.
+     ------------------------------------------------------------------ */
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbzj-CYa1w6RTS-KQCYcAPT3rGZDygEXYz8PtrpMxxaO3Bl7pz4FqXaXVvS2o6rNQonJ/exec';
+
   var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
   var busca = document.getElementById('busca');
   var botoes = Array.prototype.slice.call(document.querySelectorAll('.filtro'));
@@ -496,6 +635,7 @@
     vazio.hidden = n !== 0;
   }
 
+  /* acordeao secundario: a lista das ferramentas aqui dentro */
   Array.prototype.forEach.call(document.querySelectorAll('.ver'), function (b) {
     var rotuloAberto = b.getAttribute('data-aberto');
     var rotuloFechado = b.getAttribute('data-rotulo');
@@ -505,6 +645,110 @@
       b.setAttribute('aria-expanded', String(!aberto));
       alvo.hidden = aberto;
       b.firstChild.nodeValue = aberto ? rotuloFechado : rotuloAberto;
+    });
+  });
+
+  /* ------------------------------------------------------------------
+     Newsletter: um painel embutido por card multi (nada de alert nem
+     janela nova para o formulario). O Doc abre em aba nova, como sempre.
+     Sem cookie, sem localStorage: se a pessoa voltar, o campo vem vazio.
+     ------------------------------------------------------------------ */
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+
+  function abreDoc(url) {
+    window.open(url, '_blank', 'noopener');
+  }
+
+  function envia(dados) {
+    if (!ENDPOINT || ENDPOINT === 'COLOCAR_AQUI') return;   /* sem endpoint: segue para o Doc */
+    try {
+      /* text/plain + no-cors: o Apps Script nao responde preflight, e assim o
+         navegador manda a requisicao simples, sem bloqueio de CORS. Nao
+         precisamos ler a resposta, so registrar o lead. */
+      var p = fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(dados),
+        mode: 'no-cors',
+        keepalive: true,
+        credentials: 'omit'
+      });
+      if (p && p.catch) p.catch(function () { /* falhou: a pessoa nao pode ser bloqueada */ });
+    } catch (e) { /* navegador antigo ou bloqueio: segue para o Doc */ }
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('.painel'), function (painel) {
+    var gatilho = document.querySelector('[aria-controls="' + painel.id + '"]');
+    var form = painel.querySelector('.painel-form');
+    var campo = painel.querySelector('.painel-input');
+    var erro = painel.querySelector('.painel-erro');
+    var docUrl = painel.getAttribute('data-doc') || '';
+    var reel = painel.getAttribute('data-reel') || '';
+
+    function abre() {
+      painel.hidden = false;
+      if (gatilho) gatilho.setAttribute('aria-expanded', 'true');
+      campo.focus();
+    }
+    function fecha(devolveFoco) {
+      painel.hidden = true;
+      if (gatilho) {
+        gatilho.setAttribute('aria-expanded', 'false');
+        if (devolveFoco) gatilho.focus();
+      }
+    }
+    function mostraErro(msg) {
+      erro.textContent = msg;
+      erro.hidden = false;
+      campo.setAttribute('aria-invalid', 'true');
+      campo.focus();
+    }
+
+    if (gatilho) {
+      gatilho.addEventListener('click', function (ev) {
+        /* o link aponta para o Doc: com JS ele abre o painel antes, sem JS vai direto */
+        if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button === 1) return;
+        ev.preventDefault();
+        if (painel.hidden) abre(); else fecha(true);
+      });
+    }
+
+    campo.addEventListener('input', function () {
+      if (campo.getAttribute('aria-invalid') === 'true') {
+        campo.removeAttribute('aria-invalid');
+        erro.hidden = true;
+      }
+    });
+
+    if (form) {
+      form.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        var email = (campo.value || '').trim();
+        if (!EMAIL_RE.test(email)) {
+          mostraErro('Confere o e-mail? Parece que falta alguma coisa.');
+          return;
+        }
+        erro.hidden = true;
+        campo.removeAttribute('aria-invalid');
+
+        envia({
+          email: email,
+          evento: 'assinatura',
+          reel: reel,
+          ferramenta: '',
+          data: new Date().toISOString()
+        });
+        if (docUrl) abreDoc(docUrl);
+        form.reset();
+        fecha(false);
+      });
+    }
+
+    painel.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape' || ev.key === 'Esc') {
+        ev.preventDefault();
+        fecha(true);
+      }
     });
   });
 
@@ -522,7 +766,7 @@
   if (location.hash) {
     var alvo = document.querySelector(location.hash);
     if (alvo && alvo.classList.contains('card')) {
-      var btn = alvo.querySelector('.ver');
+      var btn = alvo.querySelector('.acao, .ver');
       if (btn) btn.click();
       alvo.scrollIntoView({block: 'start'});
     }
