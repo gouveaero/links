@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gabriel Gouvea &middot; ferramentas dos reels</title>
+<meta name="description" content="Todas as ferramentas dos meus reels, num lugar só. Grátis e de código aberto na maioria.">
+<meta name="theme-color" content="#0a0a0b">
+<meta name="robots" content="index,follow">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  :root{
+    --bg:#0a0a0b;
+    --bg-soft:#0f0f11;
+    --card:#141416;
+    --card-hi:#1b1b1f;
+    --line:#2a2a2f;
+    --text:#f5f5f7;
+    --muted:#b0b0b8;
+    --accent:#e9c46a;
+    --accent-ink:#171204;
+    --paid:#ff9a5c;
+  }
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Noto Sans",sans-serif;
+    font-size:16px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;max-width:560px;margin:0 auto;padding:28px 18px 40px;text-align:center}
+  a{color:var(--accent)}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:10px}
+
+  header{padding:8px 0 20px}
+  h1{font-size:1.6rem;line-height:1.2;margin:0 0 6px;letter-spacing:-.01em;font-weight:700}
+  .handle{display:inline-flex;align-items:center;gap:6px;font-size:.92rem;font-weight:600;text-decoration:none;color:var(--muted);padding:4px 10px;border-radius:999px;border:1px solid var(--line)}
+  .handle:hover{color:var(--text);border-color:#3a3a40}
+  .tagline{margin:14px auto 0;max-width:26rem;color:var(--muted);font-size:.98rem}
+
+  .controls{position:sticky;top:0;z-index:5;background:rgba(10,10,11,.94);backdrop-filter:blur(10px);padding:12px 0 10px;border-bottom:1px solid rgba(42,42,47,.7);margin-bottom:6px}
+  .search{display:block;margin:0 0 10px}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  input[type=search]{
+    width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);
+    background:var(--bg-soft);color:var(--text);font-size:1rem;font-family:inherit;
+  }
+  input[type=search]::placeholder{color:#8a8a92}
+  input[type=search]:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(233,196,106,.25)}
+  .filtros{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  .filtro{
+    flex:1 1 0;min-width:0;min-height:44px;padding:9px 10px;border-radius:999px;
+    background:transparent;color:var(--muted);border:1px solid var(--line);
+    font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;
+  }
+  .filtro:hover{color:var(--text);border-color:#3a3a40}
+  .filtro[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+
+  .contador{margin:14px 0 10px;color:var(--muted);font-size:.82rem;letter-spacing:.02em}
+
+  .lista{display:flex;flex-direction:column;gap:12px;text-align:left}
+  .card{
+    display:flex;flex-direction:column;gap:9px;
+    background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px 15px 14px;
+  }
+  .card[hidden]{display:none}
+  .card-top{display:flex;align-items:flex-start;gap:10px}
+  .name{margin:0;font-size:1.02rem;font-weight:650;line-height:1.3;flex:1;letter-spacing:-.005em}
+  .desc{margin:0;color:var(--muted);font-size:.9rem;line-height:1.42}
+  .card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:3px}
+  .badge{
+    display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.09em;
+    text-transform:uppercase;padding:5px 9px;border-radius:999px;white-space:nowrap;
+  }
+  .badge.cta{color:var(--accent);background:rgba(233,196,106,.12);border:1px solid rgba(233,196,106,.42)}
+  .badge.paid{color:var(--paid);background:rgba(255,154,92,.12);border:1px solid rgba(255,154,92,.45);text-transform:none;letter-spacing:.03em;font-size:.7rem}
+  .open{
+    display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:8px 16px;border-radius:10px;
+    background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:.9rem;text-decoration:none;
+  }
+  .open:hover{background:#f2d386}
+  .arrow{font-size:.86em}
+
+  .vazio{padding:26px 8px;color:var(--muted);font-size:.95rem}
+  .vazio[hidden]{display:none}
+
+  footer{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);text-align:left}
+  footer h2{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:#8f8f97;margin:0 0 8px;font-weight:700}
+  footer ul{margin:0;padding-left:18px;color:#9a9aa2;font-size:.78rem;line-height:1.55}
+  footer li{margin-bottom:4px}
+  .priv{margin:14px 0 0;color:#84848c;font-size:.76rem;text-align:center}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Gabriel Gouvea</h1>
+    <a class="handle" href="https://instagram.com/ogabrielsg" target="_blank" rel="noopener noreferrer"
+       aria-label="Instagram @ogabrielsg (abre em nova aba)">@ogabrielsg</a>
+    <p class="tagline">Todas as ferramentas dos meus reels, num lugar s&oacute;.</p>
+  </header>
+
+  <div class="controls">
+    <div class="search">
+      <label class="sr-only" for="busca">Buscar ferramenta pelo nome ou pela descri&ccedil;&atilde;o</label>
+      <input id="busca" type="search" placeholder="Buscar ferramenta..." autocomplete="off" spellcheck="false">
+    </div>
+    <div class="filtros" role="group" aria-label="Filtrar por pre&ccedil;o">
+      <button class="filtro" type="button" data-filtro="todas" aria-pressed="true">Todas</button>
+      <button class="filtro" type="button" data-filtro="gratis" aria-pressed="false">Gr&aacute;tis</button>
+      <button class="filtro" type="button" data-filtro="pago" aria-pressed="false">Pagas</button>
+    </div>
+  </div>
+
+  <p class="contador" id="contador" aria-live="polite">32 ferramentas</p>
+
+  <main class="lista" id="lista">
+      <article class="card" data-tipo="gratis" data-busca="gpu unlock destrava a potencia escondida nas placas rtx 20, 30 e 40, com ganho de ate 2x em fp16, bf16 e tf32. placa">
+        <div class="card-top">
+          <h2 class="name">GPU Unlock</h2>
+          
+        </div>
+        <p class="desc">Destrava a potência escondida nas placas RTX 20, 30 e 40, com ganho de até 2x em FP16, BF16 e TF32.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: PLACA">PLACA</span>
+          <a class="open" href="https://github.com/Zagitta/gpu-unlock" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir GPU Unlock (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="mirofish motor de inteligencia de enxame que simula milhares de clientes para testar um lancamento antes de gastar com anuncio. reversa">
+        <div class="card-top">
+          <h2 class="name">MiroFish</h2>
+          
+        </div>
+        <p class="desc">Motor de inteligência de enxame que simula milhares de clientes para testar um lançamento antes de gastar com anúncio.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: REVERSA">REVERSA</span>
+          <a class="open" href="https://github.com/666ghj/MiroFish" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir MiroFish (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="google maps scraper kit monta listas de empresas locais do google maps com nome, telefone, e-mail, site e redes sociais, rodando no seu computador. maps">
+        <div class="card-top">
+          <h2 class="name">Google Maps Scraper Kit</h2>
+          
+        </div>
+        <p class="desc">Monta listas de empresas locais do Google Maps com nome, telefone, e-mail, site e redes sociais, rodando no seu computador.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: MAPS">MAPS</span>
+          <a class="open" href="https://github.com/Mahanaicoach/google-maps-scraper-kit" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir Google Maps Scraper Kit (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="replica onze skills que mapeiam um app, reconstroem tela por tela, acrescentam backend e testam o resultado atras de bugs. clone">
+        <div class="card-top">
+          <h2 class="name">Replica</h2>
+          
+        </div>
+        <p class="desc">Onze skills que mapeiam um app, reconstroem tela por tela, acrescentam backend e testam o resultado atrás de bugs.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: CLONE">CLONE</span>
+          <a class="open" href="https://github.com/Jakeschincariol/replica-skill" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir Replica (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="supoclip alternativa de codigo aberto ao opusclip: corta video longo, podcast ou live em trechos verticais com legenda palavra por palavra. corte">
+        <div class="card-top">
+          <h2 class="name">SupoClip</h2>
+          
+        </div>
+        <p class="desc">Alternativa de código aberto ao OpusClip: corta vídeo longo, podcast ou live em trechos verticais com legenda palavra por palavra.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: CORTE">CORTE</span>
+          <a class="open" href="https://github.com/FujiwaraChoki/supoclip" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir SupoClip (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="onetake faz video em um plano continuo, em que cada beat nasce do anterior, sem corte para o proximo slide. skills">
+        <div class="card-top">
+          <h2 class="name">Onetake</h2>
+          
+        </div>
+        <p class="desc">Faz vídeo em um plano contínuo, em que cada beat nasce do anterior, sem corte para o próximo slide.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: SKILLS">SKILLS</span>
+          <a class="open" href="https://github.com/feitangyuan/onetake" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir Onetake (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="collage b-roll transforma uma frase falada em video de colagem de papel, no formato 9:16, para usar como b-roll. skills">
+        <div class="card-top">
+          <h2 class="name">Collage B-roll</h2>
+          
+        </div>
+        <p class="desc">Transforma uma frase falada em vídeo de colagem de papel, no formato 9:16, para usar como B-roll.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: SKILLS">SKILLS</span>
+          <a class="open" href="https://github.com/MegaTroll222/VOX-COLLAGE-BROLL" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir Collage B-roll (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="claude animation base kit inicial para animar desenhos pintados a mao com p5.js, o pincel p5.brush e o mascote clawd. skills">
+        <div class="card-top">
+          <h2 class="name">Claude Animation Base</h2>
+          
+        </div>
+        <p class="desc">Kit inicial para animar desenhos pintados à mão com p5.js, o pincel p5.brush e o mascote Clawd.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: SKILLS">SKILLS</span>
+          <a class="open" href="https://github.com/JohnHeibel/ClaudeAnimationBase" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir Claude Animation Base (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="lemo opuscar traz dezenas de estilos de filme prontos em codigo para o agente montar video sem gerador de video. skills">
+        <div class="card-top">
+          <h2 class="name">Lemo Opuscar</h2>
+          
+        </div>
+        <p class="desc">Traz dezenas de estilos de filme prontos em código para o agente montar vídeo sem gerador de vídeo.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: SKILLS">SKILLS</span>
+          <a class="open" href="https://github.com/lemomo-ai/lemo-opuscar" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir Lemo Opuscar (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="hyperframes voce escreve html e ele renderiza video, feito para agentes de codigo. skills">
+        <div class="card-top">
+          <h2 class="name">HyperFrames</h2>
+          
+        </div>
+        <p class="desc">Você escreve HTML e ele renderiza vídeo, feito para agentes de código.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: SKILLS">SKILLS</span>
+          <a class="open" href="https://github.com/heygen-com/hyperframes" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir HyperFrames (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="remotion ensina o agente a montar cena, corte e animacao em codigo, com foco em react. skills">
+        <div class="card-top">
+          <h2 class="name">Remotion</h2>
+          
+        </div>
+        <p class="desc">Ensina o agente a montar cena, corte e animação em código, com foco em React.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: SKILLS">SKILLS</span>
+          <a class="open" href="https://www.skills.sh/remotion-dev/skills" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir Remotion (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="pago" data-busca="cdms scaledown modelos que so decidem, sem escrever texto: classificam, extraem e resumem em formato fixo, com muito menos token. cdm">
+        <div class="card-top">
+          <h2 class="name">CDMs ScaleDown</h2>
+          <span class="badge paid">Pago</span>
+        </div>
+        <p class="desc">Modelos que só decidem, sem escrever texto: classificam, extraem e resumem em formato fixo, com muito menos token.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: CDM">CDM</span>
+          <a class="open" href="https://scaledown.ai" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir CDMs ScaleDown (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="notebooklm (gemini notebook) caderno de estudos do google que le seus pdfs, links e videos e gera resumo em audio, mapa mental, flashcards e slides. notebook">
+        <div class="card-top">
+          <h2 class="name">NotebookLM (Gemini Notebook)</h2>
+          
+        </div>
+        <p class="desc">Caderno de estudos do Google que lê seus PDFs, links e vídeos e gera resumo em áudio, mapa mental, flashcards e slides.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: NOTEBOOK">NOTEBOOK</span>
+          <a class="open" href="https://notebooklm.google.com" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir NotebookLM (Gemini Notebook) (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="trail code da ao agente um mapa do codigo para ele se localizar mais rapido, gastando menos token e menos tempo. mapa">
+        <div class="card-top">
+          <h2 class="name">Trail Code</h2>
+          
+        </div>
+        <p class="desc">Dá ao agente um mapa do código para ele se localizar mais rápido, gastando menos token e menos tempo.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: MAPA">MAPA</span>
+          <a class="open" href="https://github.com/trailhq/Trail-Code" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir Trail Code (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="leis do brasil em markdown todas as leis do brasil em arquivos markdown, prontas para busca e para o agente ler. leis">
+        <div class="card-top">
+          <h2 class="name">Leis do Brasil em Markdown</h2>
+          
+        </div>
+        <p class="desc">Todas as leis do Brasil em arquivos Markdown, prontas para busca e para o agente ler.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: LEIS">LEIS</span>
+          <a class="open" href="https://github.com/ctresb/leis" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir Leis do Brasil em Markdown (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="voicestudio alternativa local ao elevenlabs: clonagem de voz, desenho de voz e dublagem rodando na sua maquina. voice">
+        <div class="card-top">
+          <h2 class="name">VoiceStudio</h2>
+          
+        </div>
+        <p class="desc">Alternativa local ao ElevenLabs: clonagem de voz, desenho de voz e dublagem rodando na sua máquina.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: VOICE">VOICE</span>
+          <a class="open" href="https://github.com/debpalash/VoiceStudio" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir VoiceStudio (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="ai torture chamber experimentos de steering que empurram um modelo pequeno para estados emocionais fortes e medem o efeito. steering">
+        <div class="card-top">
+          <h2 class="name">AI Torture Chamber</h2>
+          
+        </div>
+        <p class="desc">Experimentos de steering que empurram um modelo pequeno para estados emocionais fortes e medem o efeito.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: STEERING">STEERING</span>
+          <a class="open" href="https://github.com/terrafying/ai-torture-chamber" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir AI Torture Chamber (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="universal-modder skills e ferramentas que deixam o agente modificar quase qualquer jogo de pc. software">
+        <div class="card-top">
+          <h2 class="name">universal-modder</h2>
+          
+        </div>
+        <p class="desc">Skills e ferramentas que deixam o agente modificar quase qualquer jogo de PC.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: SOFTWARE">SOFTWARE</span>
+          <a class="open" href="https://github.com/rehan-remade/universal-modder" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir universal-modder (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="opencut editor de video de codigo aberto, alternativa ao capcut, no navegador ou no desktop. editor">
+        <div class="card-top">
+          <h2 class="name">OpenCut</h2>
+          
+        </div>
+        <p class="desc">Editor de vídeo de código aberto, alternativa ao CapCut, no navegador ou no desktop.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: EDITOR">EDITOR</span>
+          <a class="open" href="https://github.com/OpenCut-app/OpenCut" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir OpenCut (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="skycraft mod que leva a fisica, o inventario e os blocos do minecraft para dentro de skyrim. nuvem">
+        <div class="card-top">
+          <h2 class="name">SkyCraft</h2>
+          
+        </div>
+        <p class="desc">Mod que leva a física, o inventário e os blocos do Minecraft para dentro de Skyrim.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: NUVEM">NUVEM</span>
+          <a class="open" href="https://github.com/chasmlol/SkyCraft" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir SkyCraft (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="photocraft editor de fotos escrito em rust, com ferramentas de ajuste e filtros. foto">
+        <div class="card-top">
+          <h2 class="name">PhotoCraft</h2>
+          
+        </div>
+        <p class="desc">Editor de fotos escrito em Rust, com ferramentas de ajuste e filtros.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: FOTO">FOTO</span>
+          <a class="open" href="https://github.com/storytold/photocraft" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir PhotoCraft (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="opengym app de treino e peso corporal, de codigo aberto, para iphone, apple watch e android. repos">
+        <div class="card-top">
+          <h2 class="name">openGym</h2>
+          
+        </div>
+        <p class="desc">App de treino e peso corporal, de código aberto, para iPhone, Apple Watch e Android.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: REPOS">REPOS</span>
+          <a class="open" href="https://github.com/DuarteSantos8/openGym" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir openGym (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="vorssaint-utils kit de utilitarios de barra de menu para macos, de codigo aberto. repos">
+        <div class="card-top">
+          <h2 class="name">vorssaint-utils</h2>
+          
+        </div>
+        <p class="desc">Kit de utilitários de barra de menu para macOS, de código aberto.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: REPOS">REPOS</span>
+          <a class="open" href="https://github.com/vorssaint/vorssaint-utils" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir vorssaint-utils (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="yoinks baixa video pelo terminal, sem anuncio e sem site suspeito. repos">
+        <div class="card-top">
+          <h2 class="name">yoinks</h2>
+          
+        </div>
+        <p class="desc">Baixa vídeo pelo terminal, sem anúncio e sem site suspeito.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: REPOS">REPOS</span>
+          <a class="open" href="https://github.com/pablostanley/yoinks" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir yoinks (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="god&#x27;s eye view simulador de satelite espiao no navegador, com dados espaciais abertos reais. repos">
+        <div class="card-top">
+          <h2 class="name">God&#x27;s Eye View</h2>
+          
+        </div>
+        <p class="desc">Simulador de satélite espião no navegador, com dados espaciais abertos reais.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: REPOS">REPOS</span>
+          <a class="open" href="https://github.com/bilawalsidhu/gods-eye-view" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir God&#x27;s Eye View (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="pago" data-busca="gemini 4 argon modelo de ponta do google para tarefas complexas, com leitura de planilhas, graficos e analise de dados. argon">
+        <div class="card-top">
+          <h2 class="name">Gemini 4 Argon</h2>
+          <span class="badge paid">Pago</span>
+        </div>
+        <p class="desc">Modelo de ponta do Google para tarefas complexas, com leitura de planilhas, gráficos e análise de dados.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: ARGON">ARGON</span>
+          <a class="open" href="https://gemini.google.com" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir Gemini 4 Argon (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="google workspace cli um comando para drive, gmail, agenda, docs, planilhas e chat. github">
+        <div class="card-top">
+          <h2 class="name">Google Workspace CLI</h2>
+          
+        </div>
+        <p class="desc">Um comando para Drive, Gmail, Agenda, Docs, Planilhas e Chat.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: GITHUB">GITHUB</span>
+          <a class="open" href="https://github.com/googleworkspace/cli" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir Google Workspace CLI (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="pago" data-busca="apify loja com milhares de scrapers prontos para puxar dados de sites. github">
+        <div class="card-top">
+          <h2 class="name">Apify</h2>
+          <span class="badge paid">Pago</span>
+        </div>
+        <p class="desc">Loja com milhares de scrapers prontos para puxar dados de sites.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: GITHUB">GITHUB</span>
+          <a class="open" href="https://apify.com/store" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir Apify (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="agent skills (addy osmani) mais de vinte skills de engenharia de producao para agentes de codigo. github">
+        <div class="card-top">
+          <h2 class="name">Agent Skills (Addy Osmani)</h2>
+          
+        </div>
+        <p class="desc">Mais de vinte skills de engenharia de produção para agentes de código.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: GITHUB">GITHUB</span>
+          <a class="open" href="https://github.com/addyosmani/agent-skills" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir Agent Skills (Addy Osmani) (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="playwright cli deixa o agente abrir um navegador de verdade, gravar as acoes e testar a pagina. github">
+        <div class="card-top">
+          <h2 class="name">Playwright CLI</h2>
+          
+        </div>
+        <p class="desc">Deixa o agente abrir um navegador de verdade, gravar as ações e testar a página.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: GITHUB">GITHUB</span>
+          <a class="open" href="https://github.com/microsoft/playwright-cli" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir Playwright CLI (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="cloudflare security-audit skill skill que roda auditoria de seguranca em fases, com achados verificaveis por maquina. auditoria">
+        <div class="card-top">
+          <h2 class="name">Cloudflare security-audit skill</h2>
+          
+        </div>
+        <p class="desc">Skill que roda auditoria de segurança em fases, com achados verificáveis por máquina.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: AUDITORIA">AUDITORIA</span>
+          <a class="open" href="https://github.com/cloudflare/security-audit-skill" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir Cloudflare security-audit skill (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+      <article class="card" data-tipo="gratis" data-busca="rea agente de engenharia reversa que vai do comportamento do app ate binario nativo. decode">
+        <div class="card-top">
+          <h2 class="name">REA</h2>
+          
+        </div>
+        <p class="desc">Agente de engenharia reversa que vai do comportamento do app até binário nativo.</p>
+        <div class="card-foot">
+          <span class="badge cta" title="Palavra de CTA do reel: DECODE">DECODE</span>
+          <a class="open" href="https://github.com/morluto/rea" target="_blank" rel="noopener noreferrer"
+             aria-label="Abrir REA (link externo, abre em nova aba)">Abrir<span class="arrow" aria-hidden="true">&#8599;</span></a>
+        </div>
+      </article>
+  </main>
+
+  <p class="vazio" id="vazio" hidden>Nenhuma ferramenta encontrada. Tente outra palavra.</p>
+
+  <footer>
+    <h2>Avisos de licen&ccedil;a</h2>
+    <ul>
+      <li>Remotion &eacute; pago para empresas com 3 ou mais funcion&aacute;rios.</li>
+      <li>Onetake &eacute; s&oacute; para uso n&atilde;o comercial.</li>
+      <li>Collage B-roll depende do MaxFusion, que &eacute; pago.</li>
+      <li>VoiceStudio tem vers&atilde;o Pro paga.</li>
+    </ul>
+    <p class="priv">Esta p&aacute;gina n&atilde;o usa cookies, n&atilde;o tem analytics e n&atilde;o coleta seus dados.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var busca = document.getElementById('busca');
+  var botoes = Array.prototype.slice.call(document.querySelectorAll('.filtro'));
+  var contador = document.getElementById('contador');
+  var vazio = document.getElementById('vazio');
+  var filtro = 'todas';
+
+  function norm(s) {
+    return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+  }
+
+  function aplica() {
+    var q = norm(busca.value);
+    var n = 0;
+    cards.forEach(function (c) {
+      var okTexto = !q || c.dataset.busca.indexOf(q) !== -1;
+      var okTipo = filtro === 'todas' || c.dataset.tipo === filtro;
+      var mostra = okTexto && okTipo;
+      c.hidden = !mostra;
+      if (mostra) n++;
+    });
+    contador.textContent = n === 1 ? '1 ferramenta' : n + ' ferramentas';
+    vazio.hidden = n !== 0;
+  }
+
+  busca.addEventListener('input', aplica);
+  busca.addEventListener('search', aplica);
+  botoes.forEach(function (b) {
+    b.addEventListener('click', function () {
+      filtro = b.dataset.filtro;
+      botoes.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+      aplica();
+    });
+  });
+  aplica();
+})();
+</script>
+</body>
+</html>
