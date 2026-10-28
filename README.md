@@ -8,7 +8,7 @@ Substitui o envio de link por DM no Instagram.
 - Um card por reel, do mais novo para o mais antigo, com miniatura real (frame do vídeo), ícone, selo do CTA e link do reel.
 - Reels com várias ferramentas abrem a lista dentro do card (acordeão); com uma só, o card inteiro abre a ferramenta.
 - Busca por reel/ferramenta e filtro por grátis e pagas (por reel).
-- Sem cookies, sem analytics, sem formulários.
+- Sem formulários. Tracking: `gg-tracking.js` (Meta Pixel + GA4 + Google Ads, com CAPI pelo sidecar `track.gabrielgouvea.com.br`). Clique em ferramenta = `ViewContent`, clique no Instagram = `Contact`.
 
 ## Miniaturas
 
