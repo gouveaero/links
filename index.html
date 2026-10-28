@@ -1107,8 +1107,21 @@
     window.open(url, '_blank', 'noopener');
   }
 
+  /* identificador anonimo da visita, so para juntar as acoes da mesma pessoa */
+  var VIS_ID = (function () {
+    try {
+      var v = localStorage.getItem('vis_id');
+      if (!v) {
+        v = 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+        localStorage.setItem('vis_id', v);
+      }
+      return v;
+    } catch (e) { return ''; }
+  })();
+
   function envia(dados) {
     if (!ENDPOINT || ENDPOINT === 'COLOCAR_AQUI') return;   /* sem endpoint: segue para o Doc */
+    if (!dados.origem) dados.origem = 'links' + (VIS_ID ? '#' + VIS_ID : '');
     try {
       /* text/plain + no-cors: o Apps Script nao responde preflight, e assim o
          navegador manda a requisicao simples, sem bloqueio de CORS. Nao
@@ -1133,10 +1146,10 @@
   function emailSalvo() {
     try { return localStorage.getItem('lead_email') || ''; } catch (e) { return ''; }
   }
-  function enviaClique(ferramenta, reel, link) {
+  function enviaEvento(evento, ferramenta, reel, link) {
     envia({
       email: emailSalvo(),
-      evento: 'clique',
+      evento: evento,
       reel: reel,
       ferramenta: ferramenta,
       link: link,
@@ -1155,10 +1168,15 @@
     var reel = painel.getAttribute('data-reel') || '';
     var ferramenta = painel.getAttribute('data-ferramenta') || '';
 
+    var abriuEnviado = false;
     function abre() {
       painel.hidden = false;
       if (gatilho) gatilho.setAttribute('aria-expanded', 'true');
       campo.focus();
+      if (!abriuEnviado) {
+        abriuEnviado = true;
+        enviaEvento('abriu', ferramenta, reel, docUrl);
+      }
     }
     function fecha(devolveFoco) {
       painel.hidden = true;
@@ -1252,7 +1270,9 @@
             var nome = li && li.querySelector('.li-nome');
             ferr = nome ? nome.textContent.replace('Pago', '').trim() : '';
           }
-          enviaClique(ferr, reel, a.href);
+          /* o botao "So quero o link" e uma saida declarada: pulou a inscricao */
+          var evento = a.classList.contains('secundario') ? 'pulou' : 'clique';
+          enviaEvento(evento, ferr, reel, a.href);
         });
       }
     );
