@@ -1125,6 +1125,25 @@
     } catch (e) { /* navegador antigo ou bloqueio: segue para o Doc */ }
   }
 
+  /* Registro de clique nas ferramentas. Vai para a aba "Cliques nas ferramentas"
+     com o e-mail de quem já se inscreveu nesta sessão, quando houver. */
+  function guardaEmail(em) {
+    try { localStorage.setItem('lead_email', em); } catch (e) { /* modo privado */ }
+  }
+  function emailSalvo() {
+    try { return localStorage.getItem('lead_email') || ''; } catch (e) { return ''; }
+  }
+  function enviaClique(ferramenta, reel, link) {
+    envia({
+      email: emailSalvo(),
+      evento: 'clique',
+      reel: reel,
+      ferramenta: ferramenta,
+      link: link,
+      data: new Date().toISOString()
+    });
+  }
+
   Array.prototype.forEach.call(document.querySelectorAll('.painel'), function (painel) {
     var gatilho = document.querySelector('[aria-controls="' + painel.id + '"]');
     var form = painel.querySelector('.painel-form');
@@ -1192,6 +1211,7 @@
           el.removeAttribute('aria-invalid');
         });
 
+        guardaEmail(email);
         envia({
           email: email,
           whatsapp: soDigitos,
@@ -1213,6 +1233,29 @@
         fecha(true);
       }
     });
+  });
+
+  /* cada link que leva de fato para a ferramenta registra o clique.
+     O botao "Ver a ferramenta" fica fora porque com JS ele abre o painel
+     primeiro, em vez de sair do site. */
+  Array.prototype.forEach.call(document.querySelectorAll('.card'), function (card) {
+    var painel = card.querySelector('.painel');
+    var reel = painel ? (painel.getAttribute('data-reel') || '') : '';
+    var unica = painel ? (painel.getAttribute('data-ferramenta') || '') : '';
+    Array.prototype.forEach.call(
+      card.querySelectorAll('a.li-link, a.card-link, a.btn.secundario'),
+      function (a) {
+        a.addEventListener('click', function () {
+          var ferr = unica;
+          if (!ferr) {
+            var li = a.closest('li');
+            var nome = li && li.querySelector('.li-nome');
+            ferr = nome ? nome.textContent.replace('Pago', '').trim() : '';
+          }
+          enviaClique(ferr, reel, a.href);
+        });
+      }
+    );
   });
 
   busca.addEventListener('input', aplica);
