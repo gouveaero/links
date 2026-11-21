@@ -2,7 +2,7 @@
    PDF_URL: cole aqui o link do PDF gratuito quando estiver pronto.
    Enquanto estiver vazio, o botão de download fica desabilitado
    e a página avisa que o arquivo ainda está chegando. */
-var PDF_URL = '';
+var PDF_URL = 'https://links.gabrielgouvea.com.br/profissao/guia.pdf';
 
 /* Webhook de produção do fluxo n8n "Lead /profissao → Sheet".
    O fluxo nasce desativado: o envio só funciona depois do OK do Gabriel
