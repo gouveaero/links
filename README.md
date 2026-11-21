@@ -34,9 +34,8 @@ colocar os `.jpg` decodificados em `assets/thumb/`.
 Captura de lead do reel Riemann, em `https://links.gabrielgouvea.com.br/profissao`.
 Obrigado em `/profissao/obrigado/`.
 
-- `profissao/config.js`: `PDF_URL` (https://links.gabrielgouvea.com.br/profissao/guia.pdf; o arquivo está em `profissao/guia.pdf`), `ENDPOINT` (webhook de produção do n8n) e `ORIGEM_PADRAO` (`reel-riemann`, com utm/ref da query string).
-- O POST vai para o fluxo n8n "Lead /profissao → Sheet" (tag grokbot). O ID da planilha se cola no nó **Append na planilha**, campo Document ID (hoje está `COLE_O_ID_DA_PLANILHA_AQUI`). A primeira aba deve se chamar `Leads`, com o cabeçalho: timestamp, nome, email, whatsapp, area, origem, status.
-- O fluxo nasce desativado e só deve ser ligado com o OK do Gabriel, depois do ID da planilha.
+- `profissao/config.js`: `PDF_URL` (https://links.gabrielgouvea.com.br/profissao/guia.pdf; o arquivo está em `profissao/guia.pdf`), `ENDPOINT` (webhook de produção do n8n) e `ORIGEM_PADRAO` (`instagram-profissao`). Se a URL trouxer `?origem=`, esse valor é o que vai para a planilha (bio, stories, aula, e-mail).
+- O POST vai para o fluxo n8n "Lead /profissao → Sheet" (tag grokbot, desativado até o OK do Gabriel). O nó Append na planilha usa o Document ID `1FcZx91r7MdM6eXdSnh-XxYkGFhri4bCstqfLTout3RQ`, aba `Leads`, cabeçalho: timestamp, nome, email, whatsapp, area, origem, status.
 
 ## Deploy
 

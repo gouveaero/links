@@ -3,67 +3,74 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>A IA na sua profissão · Gabriel Gouvea</title>
-<meta name="description" content="Deixe seus dados e receba o PDF gratuito Primeiros passos para identificar como a inteligência artificial se encaixa na sua profissão.">
+<title>Primeiros passos para identificar como a inteligência artificial se encaixa na sua profissão · Gabriel Gouvêa</title>
+<meta name="description" content="Guia gratuito de Gabriel Gouvêa: primeiros passos para identificar como a inteligência artificial se encaixa na sua profissão.">
 <meta name="theme-color" content="#0a0a0b">
 <meta name="robots" content="index,follow">
 <link rel="stylesheet" href="/profissao/styles.css">
-<script src="/gg-tracking.js?v=1" defer data-rules='{"a.perfil-handle": "Contact", "a.perfil-main": "Contact"}'></script>
 </head>
 <body>
 <div class="wrap">
   <section class="perfil" aria-labelledby="perfil-nome">
     <img class="perfil-foto" src="/assets/profile/gabriel.jpg" width="84" height="84"
-         alt="Foto de Gabriel Gouvea" decoding="async" fetchpriority="high">
+         alt="Foto de Gabriel Gouvêa" decoding="async" fetchpriority="high">
     <div class="perfil-info">
       <h1 class="perfil-nome" id="perfil-nome"><a class="perfil-main" href="https://gabrielgouvea.com.br/"
         target="_blank" rel="noopener noreferrer"
-        aria-label="Ver meu site, gabrielgouvea.com.br (abre em nova aba)">Gabriel Gouvea</a></h1>
+        aria-label="Ver meu site, gabrielgouvea.com.br (abre em nova aba)">Gabriel Gouvêa</a></h1>
       <a class="perfil-handle" href="https://instagram.com/gab.gouvea" target="_blank" rel="noopener noreferrer"
          aria-label="Instagram @gab.gouvea (abre em nova aba)">@gab.gouvea</a>
-      <p class="perfil-bio">Engineer. Entrepreneur. <b>AI builder</b>.</p>
+      <p class="perfil-bio">Engineer. Entrepreneur.</p>
       <span class="perfil-btn">Ver meu site<span aria-hidden="true">&#8599;</span></span>
     </div>
   </section>
 
-  <p class="tagline">Um material gratuito, feito a partir do reel.</p>
+  <p class="chapeu">Guia gratuito de Gabriel Gouvêa</p>
   <h2 class="titulo-pagina">Primeiros passos para identificar como a inteligência artificial se encaixa na sua profissão</h2>
-  <p class="intro">Deixa seus dados abaixo. Eu te envio o PDF gratuito e, depois, o aviso da aula.</p>
+  <p class="intro">A inteligência artificial não substitui o profissional. Ela vira o cavalo de um jóquei que sabe para onde ir. Este guia, em poucas páginas, ajuda você a achar o encaixe na sua área: o que repetir, o que só você decide, e como dar o primeiro passo com as rédeas na mão. Na aula, a gente aprofunda esse mapa com exemplos reais de ofícios diferentes e o desenho de um primeiro fluxo de trabalho.</p>
 
+  <p class="acima-form">Leva menos de um minuto. O PDF chega no e-mail que você cadastrar.</p>
   <div class="painel" id="caixa-form">
     <form id="form-lead" class="painel-form" novalidate>
+      <div class="hp" aria-hidden="true">
+        <label for="website">Website</label>
+        <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
       <label class="painel-label" for="nome">Nome</label>
       <input class="painel-input" id="nome" name="nome" type="text" autocomplete="name"
-             required maxlength="120" aria-describedby="form-erro">
+             required maxlength="120" minlength="2" placeholder="Seu nome"
+             aria-describedby="form-erro">
 
       <label class="painel-label painel-label-2" for="email">E-mail</label>
       <input class="painel-input" id="email" name="email" type="email" inputmode="email"
-             autocomplete="email" required maxlength="254" aria-describedby="form-erro">
+             autocomplete="email" required maxlength="254" placeholder="seu@email.com"
+             aria-describedby="form-erro">
 
       <label class="painel-label painel-label-2" for="whatsapp">WhatsApp <span class="opc">(opcional)</span></label>
       <input class="painel-input" id="whatsapp" name="whatsapp" type="tel" inputmode="tel"
-             autocomplete="tel" maxlength="20" placeholder="Ex.: 31 99999-0000"
+             autocomplete="tel" maxlength="40" placeholder="Opcional, com DDD"
              aria-describedby="form-erro">
 
       <label class="painel-label painel-label-2" for="area">Qual a sua área de atuação?</label>
-      <input class="painel-input" id="area" name="area" type="text" maxlength="200"
-             placeholder="Ex.: advogado, médico, engenheiro, professor..."
-             aria-describedby="form-erro">
+      <textarea class="painel-area" id="area" name="area" required maxlength="500" rows="3"
+                placeholder="Ex.: advogado, médico, engenheiro, professor..."
+                aria-describedby="form-erro"></textarea>
 
       <label class="painel-check" id="label-autorizo" for="autorizo">
         <input id="autorizo" name="autorizo" type="checkbox" required>
-        <span>Autorizo o Gabriel Gouvea a entrar em contato comigo por e-mail e WhatsApp.</span>
+        <span>Autorizo o contato por e-mail (e por WhatsApp, se eu preenchi) com o guia e com o convite da aula.</span>
       </label>
 
       <p class="painel-erro" id="form-erro" role="alert" hidden></p>
       <div class="painel-botoes">
-        <button class="btn primario" id="btn-enviar" type="submit">Enviar</button>
+        <button class="btn primario" id="btn-enviar" type="submit">Quero o guia gratuito</button>
       </div>
     </form>
   </div>
 
   <footer>
-    <p class="priv">Seus dados ficam só para eu te enviar o material e o aviso da aula. <a href="/">Ver todas as ferramentas</a></p>
+    <p class="priv">Você pode pedir a retirada dos seus dados quando quiser, respondendo o e-mail do guia. Não enviamos lista de transmissão.</p>
   </footer>
 </div>
 
@@ -71,6 +78,7 @@
 <script>
 (function () {
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+  var ERRO_CAMPOS = 'Preencha nome, e-mail válido e a sua área de atuação';
   var form = document.getElementById('form-lead');
   var erro = document.getElementById('form-erro');
   var btn = document.getElementById('btn-enviar');
@@ -78,19 +86,15 @@
 
   function origem() {
     var params = new URLSearchParams(location.search);
-    var keep = [];
-    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','ref'].forEach(function (k) {
-      var v = params.get(k);
-      if (v) keep.push(encodeURIComponent(k) + '=' + encodeURIComponent(v));
-    });
-    var base = (typeof ORIGEM_PADRAO === 'string' && ORIGEM_PADRAO) ? ORIGEM_PADRAO : 'reel-riemann';
-    return keep.length ? (base + '?' + keep.join('&')) : base;
+    var o = (params.get('origem') || '').trim();
+    var base = (typeof ORIGEM_PADRAO === 'string' && ORIGEM_PADRAO) ? ORIGEM_PADRAO : 'instagram-profissao';
+    return o || base;
   }
 
   function mostraErro(msg, alvo) {
     erro.textContent = msg;
     erro.hidden = false;
-    document.querySelectorAll('.painel-input[aria-invalid], .painel-check[aria-invalid]').forEach(function (el) {
+    document.querySelectorAll('.painel-input[aria-invalid], .painel-area[aria-invalid], .painel-check[aria-invalid]').forEach(function (el) {
       el.removeAttribute('aria-invalid');
     });
     if (alvo) {
@@ -102,7 +106,7 @@
   function limpaErro() {
     erro.hidden = true;
     erro.textContent = '';
-    document.querySelectorAll('.painel-input[aria-invalid], .painel-check[aria-invalid]').forEach(function (el) {
+    document.querySelectorAll('.painel-input[aria-invalid], .painel-area[aria-invalid], .painel-check[aria-invalid]').forEach(function (el) {
       el.removeAttribute('aria-invalid');
     });
   }
@@ -112,23 +116,21 @@
 
   form.addEventListener('submit', function (ev) {
     ev.preventDefault();
+    var honeypot = (form.website && form.website.value || '').trim();
+    if (honeypot) {
+      window.location.href = '/profissao/obrigado/';
+      return;
+    }
+
     var nome = (form.nome.value || '').trim();
     var email = (form.email.value || '').trim();
-    var zap = (form.whatsapp.value || '').replace(/[^0-9+]/g, '');
-    var digitos = zap.replace(/\D/g, '');
+    var whatsapp = (form.whatsapp.value || '').trim();
     var area = (form.area.value || '').trim();
     var autorizo = form.autorizo.checked;
 
-    if (!nome) {
-      mostraErro('Me diz o seu nome?', form.nome);
-      return;
-    }
-    if (!EMAIL_RE.test(email)) {
-      mostraErro('Confere o e-mail? Parece que falta alguma coisa.', form.email);
-      return;
-    }
-    if ((form.whatsapp.value || '').trim() && digitos.length < 8) {
-      mostraErro('Se for preencher o WhatsApp, usa DDD. Ex.: 31 99999-0000.', form.whatsapp);
+    if (nome.length < 2 || !EMAIL_RE.test(email) || !area) {
+      var alvo = nome.length < 2 ? form.nome : (!EMAIL_RE.test(email) ? form.email : form.area);
+      mostraErro(ERRO_CAMPOS, alvo);
       return;
     }
     if (!autorizo) {
@@ -139,7 +141,7 @@
     var payload = {
       nome: nome,
       email: email,
-      whatsapp: digitos,
+      whatsapp: whatsapp,
       area: area,
       autorizo: true,
       origem: origem()
@@ -152,7 +154,7 @@
     var endpoint = (typeof ENDPOINT === 'string') ? ENDPOINT : '';
     if (!endpoint) {
       btn.disabled = false;
-      btn.textContent = 'Enviar';
+      btn.textContent = 'Quero o guia gratuito';
       mostraErro('Não consegui enviar agora. Tenta de novo em instantes.');
       return;
     }
@@ -171,7 +173,7 @@
       window.location.href = '/profissao/obrigado/';
     }).catch(function () {
       btn.disabled = false;
-      btn.textContent = 'Enviar';
+      btn.textContent = 'Quero o guia gratuito';
       mostraErro('Não consegui enviar agora. Tenta de novo em instantes.');
     });
   });
