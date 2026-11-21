@@ -1,8 +1,9 @@
 FROM nginx:alpine
 
-# Página (single file, sem dependências externas)
+# Site estático (home + /profissao), sem dependências externas
 COPY index.html /usr/share/nginx/html/index.html
 COPY gg-tracking.js /usr/share/nginx/html/gg-tracking.js
+COPY profissao/ /usr/share/nginx/html/profissao/
 
 # Imagens guardadas no git em base64 (texto) e decodificadas no build para
 # /usr/share/nginx/html/assets/thumb/<id>.jpg e /assets/profile/gabriel.jpg

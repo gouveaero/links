@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pronto · A IA na sua profissão · Gabriel Gouvea</title>
+<meta name="description" content="Obrigado. Em breve você recebe o PDF gratuito e o aviso da aula.">
+<meta name="theme-color" content="#0a0a0b">
+<meta name="robots" content="noindex,follow">
+<link rel="stylesheet" href="/profissao/styles.css">
+<script src="/gg-tracking.js?v=1" defer data-rules='{"a.perfil-handle": "Contact", "a.perfil-main": "Contact"}'></script>
+</head>
+<body>
+<div class="wrap">
+  <section class="perfil" aria-labelledby="perfil-nome">
+    <img class="perfil-foto" src="/assets/profile/gabriel.jpg" width="84" height="84"
+         alt="Foto de Gabriel Gouvea" decoding="async" fetchpriority="high">
+    <div class="perfil-info">
+      <h1 class="perfil-nome" id="perfil-nome"><a class="perfil-main" href="https://gabrielgouvea.com.br/"
+        target="_blank" rel="noopener noreferrer"
+        aria-label="Ver meu site, gabrielgouvea.com.br (abre em nova aba)">Gabriel Gouvea</a></h1>
+      <a class="perfil-handle" href="https://instagram.com/gab.gouvea" target="_blank" rel="noopener noreferrer"
+         aria-label="Instagram @gab.gouvea (abre em nova aba)">@gab.gouvea</a>
+      <p class="perfil-bio">Engineer. Entrepreneur. <b>AI builder</b>.</p>
+      <span class="perfil-btn">Ver meu site<span aria-hidden="true">&#8599;</span></span>
+    </div>
+  </section>
+
+  <div class="painel" id="caixa-obrigado">
+    <h2 class="painel-h">Pronto, recebi seus dados.</h2>
+    <p class="painel-p">Obrigado por deixar o contato.</p>
+
+    <p class="aviso-pdf" data-pdf-aviso>O PDF gratuito ainda está sendo diagramado. O link aparece aqui assim que estiver pronto.</p>
+    <div class="painel-botoes">
+      <a class="btn primario completo" data-pdf-btn hidden
+         target="_blank" rel="noopener noreferrer">Baixar o PDF gratuito</a>
+    </div>
+    <p class="nota-aula">A aula vem depois. Eu te aviso por e-mail, e por WhatsApp se você deixou o número.</p>
+    <div class="painel-botoes voltar">
+      <a class="btn secundario" href="/">Ver todas as ferramentas</a>
+    </div>
+  </div>
+
+  <footer>
+    <p class="priv">Seus dados ficam só para eu te enviar o material e o aviso da aula. <a href="/profissao/">Voltar ao formulário</a></p>
+  </footer>
+</div>
+
+<script src="/profissao/config.js"></script>
+<script>
+(function () {
+
+  function preenchePdf(root) {
+    var url = (typeof PDF_URL === 'string' ? PDF_URL : '').trim();
+    var btn = root.querySelector('[data-pdf-btn]');
+    var aviso = root.querySelector('[data-pdf-aviso]');
+    if (!btn || !aviso) return;
+    if (url) {
+      btn.href = url;
+      btn.removeAttribute('aria-disabled');
+      btn.removeAttribute('tabindex');
+      btn.hidden = false;
+      aviso.hidden = true;
+    } else {
+      btn.removeAttribute('href');
+      btn.setAttribute('aria-disabled', 'true');
+      btn.setAttribute('tabindex', '-1');
+      btn.hidden = true;
+      aviso.hidden = false;
+    }
+  }
+
+  preenchePdf(document.getElementById('caixa-obrigado'));
+})();
+</script>
+</body>
+</html>

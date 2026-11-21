@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A IA na sua profissão · Gabriel Gouvea</title>
+<meta name="description" content="Deixe seus dados e receba o PDF gratuito Primeiros passos para identificar como a inteligência artificial se encaixa na sua profissão.">
+<meta name="theme-color" content="#0a0a0b">
+<meta name="robots" content="index,follow">
+<link rel="stylesheet" href="/profissao/styles.css">
+<script src="/gg-tracking.js?v=1" defer data-rules='{"a.perfil-handle": "Contact", "a.perfil-main": "Contact"}'></script>
+</head>
+<body>
+<div class="wrap">
+  <section class="perfil" aria-labelledby="perfil-nome">
+    <img class="perfil-foto" src="/assets/profile/gabriel.jpg" width="84" height="84"
+         alt="Foto de Gabriel Gouvea" decoding="async" fetchpriority="high">
+    <div class="perfil-info">
+      <h1 class="perfil-nome" id="perfil-nome"><a class="perfil-main" href="https://gabrielgouvea.com.br/"
+        target="_blank" rel="noopener noreferrer"
+        aria-label="Ver meu site, gabrielgouvea.com.br (abre em nova aba)">Gabriel Gouvea</a></h1>
+      <a class="perfil-handle" href="https://instagram.com/gab.gouvea" target="_blank" rel="noopener noreferrer"
+         aria-label="Instagram @gab.gouvea (abre em nova aba)">@gab.gouvea</a>
+      <p class="perfil-bio">Engineer. Entrepreneur. <b>AI builder</b>.</p>
+      <span class="perfil-btn">Ver meu site<span aria-hidden="true">&#8599;</span></span>
+    </div>
+  </section>
+
+  <p class="tagline">Um material gratuito, feito a partir do reel.</p>
+  <h2 class="titulo-pagina">Primeiros passos para identificar como a inteligência artificial se encaixa na sua profissão</h2>
+  <p class="intro">Deixa seus dados abaixo. Eu te envio o PDF gratuito e, depois, o aviso da aula.</p>
+
+  <div class="painel" id="caixa-form">
+    <form id="form-lead" class="painel-form" novalidate>
+      <label class="painel-label" for="nome">Nome</label>
+      <input class="painel-input" id="nome" name="nome" type="text" autocomplete="name"
+             required maxlength="120" aria-describedby="form-erro">
+
+      <label class="painel-label painel-label-2" for="email">E-mail</label>
+      <input class="painel-input" id="email" name="email" type="email" inputmode="email"
+             autocomplete="email" required maxlength="254" aria-describedby="form-erro">
+
+      <label class="painel-label painel-label-2" for="whatsapp">WhatsApp <span class="opc">(opcional)</span></label>
+      <input class="painel-input" id="whatsapp" name="whatsapp" type="tel" inputmode="tel"
+             autocomplete="tel" maxlength="20" placeholder="Ex.: 31 99999-0000"
+             aria-describedby="form-erro">
+
+      <label class="painel-label painel-label-2" for="area">Qual a sua área de atuação?</label>
+      <input class="painel-input" id="area" name="area" type="text" maxlength="200"
+             placeholder="Ex.: advogado, médico, engenheiro, professor..."
+             aria-describedby="form-erro">
+
+      <label class="painel-check" id="label-autorizo" for="autorizo">
+        <input id="autorizo" name="autorizo" type="checkbox" required>
+        <span>Autorizo o Gabriel Gouvea a entrar em contato comigo por e-mail e WhatsApp.</span>
+      </label>
+
+      <p class="painel-erro" id="form-erro" role="alert" hidden></p>
+      <div class="painel-botoes">
+        <button class="btn primario" id="btn-enviar" type="submit">Enviar</button>
+      </div>
+    </form>
+  </div>
+
+  <footer>
+    <p class="priv">Seus dados ficam só para eu te enviar o material e o aviso da aula. <a href="/">Ver todas as ferramentas</a></p>
+  </footer>
+</div>
+
+<script src="/profissao/config.js"></script>
+<script>
+(function () {
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+  var form = document.getElementById('form-lead');
+  var erro = document.getElementById('form-erro');
+  var btn = document.getElementById('btn-enviar');
+  var labelAuth = document.getElementById('label-autorizo');
+
+  function origem() {
+    var params = new URLSearchParams(location.search);
+    var keep = [];
+    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','ref'].forEach(function (k) {
+      var v = params.get(k);
+      if (v) keep.push(encodeURIComponent(k) + '=' + encodeURIComponent(v));
+    });
+    var base = (typeof ORIGEM_PADRAO === 'string' && ORIGEM_PADRAO) ? ORIGEM_PADRAO : 'reel-riemann';
+    return keep.length ? (base + '?' + keep.join('&')) : base;
+  }
+
+  function mostraErro(msg, alvo) {
+    erro.textContent = msg;
+    erro.hidden = false;
+    document.querySelectorAll('.painel-input[aria-invalid], .painel-check[aria-invalid]').forEach(function (el) {
+      el.removeAttribute('aria-invalid');
+    });
+    if (alvo) {
+      alvo.setAttribute('aria-invalid', 'true');
+      if (alvo.focus) alvo.focus();
+    }
+  }
+
+  function limpaErro() {
+    erro.hidden = true;
+    erro.textContent = '';
+    document.querySelectorAll('.painel-input[aria-invalid], .painel-check[aria-invalid]').forEach(function (el) {
+      el.removeAttribute('aria-invalid');
+    });
+  }
+
+  form.addEventListener('input', function () { limpaErro(); });
+  form.addEventListener('change', function () { limpaErro(); });
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var nome = (form.nome.value || '').trim();
+    var email = (form.email.value || '').trim();
+    var zap = (form.whatsapp.value || '').replace(/[^0-9+]/g, '');
+    var digitos = zap.replace(/\D/g, '');
+    var area = (form.area.value || '').trim();
+    var autorizo = form.autorizo.checked;
+
+    if (!nome) {
+      mostraErro('Me diz o seu nome?', form.nome);
+      return;
+    }
+    if (!EMAIL_RE.test(email)) {
+      mostraErro('Confere o e-mail? Parece que falta alguma coisa.', form.email);
+      return;
+    }
+    if ((form.whatsapp.value || '').trim() && digitos.length < 8) {
+      mostraErro('Se for preencher o WhatsApp, usa DDD. Ex.: 31 99999-0000.', form.whatsapp);
+      return;
+    }
+    if (!autorizo) {
+      mostraErro('Para eu te enviar o material, preciso da sua autorização de contato.', labelAuth);
+      return;
+    }
+
+    var payload = {
+      nome: nome,
+      email: email,
+      whatsapp: digitos,
+      area: area,
+      autorizo: true,
+      origem: origem()
+    };
+
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+    limpaErro();
+
+    var endpoint = (typeof ENDPOINT === 'string') ? ENDPOINT : '';
+    if (!endpoint) {
+      btn.disabled = false;
+      btn.textContent = 'Enviar';
+      mostraErro('Não consegui enviar agora. Tenta de novo em instantes.');
+      return;
+    }
+
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload),
+      credentials: 'omit',
+      mode: 'cors'
+    }).then(function (res) {
+      if (!res.ok) throw new Error('http');
+      return res.json().catch(function () { return { ok: true }; });
+    }).then(function (data) {
+      if (data && data.ok === false) throw new Error('http');
+      window.location.href = '/profissao/obrigado/';
+    }).catch(function () {
+      btn.disabled = false;
+      btn.textContent = 'Enviar';
+      mostraErro('Não consegui enviar agora. Tenta de novo em instantes.');
+    });
+  });
+})();
+</script>
+</body>
+</html>
